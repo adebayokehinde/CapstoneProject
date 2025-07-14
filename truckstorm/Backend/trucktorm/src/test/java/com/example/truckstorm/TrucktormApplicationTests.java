@@ -1,13 +1,13 @@
-package org.truckstorm.truckstorm;
+package com.example.truckstorm;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TruckstormApplicationTests {
+class TrucktormApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
