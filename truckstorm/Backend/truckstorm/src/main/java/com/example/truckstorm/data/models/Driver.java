@@ -1,39 +1,51 @@
 package com.example.truckstorm.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
+
 @Entity
-public class Driver {
+@DiscriminatorValue("DRIVER")
+@Getter
+@Setter
+public class Driver extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-
+    @Enumerated(EnumType.STRING)
     @NotBlank(message = "Truck type is required")
-    private String truckType;
+    @Column(nullable = false)
+    private TruckType truckType;
 
     @NotNull(message = "Max load capacity is required")
     @Positive(message = "Max load capacity must be positive")
+    @Column(nullable = false)
     private Double maxLoadCapacity;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean available = true;
-    private String licenseNumber;
-    private Double rating;
 
+    @NotBlank(message = "Driver license number is required")
+    @Column(name = "driver_license_number", nullable = false, unique = true)
+    private String driverLicenseNumber;
 
-    public boolean canCarry(Double weight) {
-        return available && maxLoadCapacity >= weight;
-    }
+    @Column(columnDefinition = "DECIMAL(3,2) DEFAULT 5.0")
+    @PositiveOrZero(message = "Rating must be positive or zero")
+    private Double rating = 5.0;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "truck_id", referencedColumnName = "id")
+    private Truck truck;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DriverStatus status = DriverStatus.AVAILABLE;
+
+    @Embedded
+    private Location currentLocation;
+
 
 }
