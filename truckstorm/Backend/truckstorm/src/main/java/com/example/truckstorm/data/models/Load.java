@@ -28,10 +28,13 @@ public class Load {
     @Positive(message = "Weight must be positive")
     private Double weight;
     @NotBlank(message = "Load type is required")
-    private String loadType;
+    private LoadType loadType;
+
+    private LoadStatus loadStatus;
+
     private String clientId;
 
-    public Load(String pickupLocation, String deliveryLocation, Double weight, String loadType, String clientId) {
+    public Load(String pickupLocation, String deliveryLocation, Double weight, LoadType loadType, String clientId) {
         this.pickupLocation = pickupLocation;
         this.deliveryLocation = deliveryLocation;
         this.weight = weight;
@@ -42,4 +45,6 @@ public class Load {
 
     public void setPickupLocation(String semicolonYabaLagos) {
     }
+
+
 }
