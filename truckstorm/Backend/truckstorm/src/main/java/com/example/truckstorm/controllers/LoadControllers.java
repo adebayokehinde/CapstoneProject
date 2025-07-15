@@ -1,18 +1,20 @@
 package com.example.truckstorm.controllers;
 
 import com.example.truckstorm.data.models.Load;
+import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.services.LoadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("/api/Load")
 public class LoadControllers {
 
     private final LoadService loadService;
 
-    public LoadController(LoadService loadService) {
+    public LoadControllers(LoadService loadService) {
         this.loadService = loadService;
     }
 
@@ -43,7 +45,7 @@ public class LoadControllers {
     @PutMapping("/{id}/status")
     public ResponseEntity<Load> updateLoadStatus(
             @PathVariable Long id,
-            @RequestParam Load.LoadStatus status) {
+            @RequestParam LoadStatus status) {
         Load updatedLoad = loadService.updateLoadStatus(id, status);
         return ResponseEntity.ok(updatedLoad);
     }

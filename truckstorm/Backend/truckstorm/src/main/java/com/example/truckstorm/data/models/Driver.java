@@ -19,11 +19,6 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is required")
-    private String name;
-
-    @NotBlank(message = "Current location is required")
-    private String currentLocation;
 
     @NotBlank(message = "Truck type is required")
     private String truckType;
@@ -33,17 +28,9 @@ public class Driver {
     private Double maxLoadCapacity;
 
     private boolean available = true;
-
     private String licenseNumber;
-    private String phoneNumber;
     private Double rating;
 
-    public Driver(String name, String currentLocation, String truckType, Double maxLoadCapacity) {
-        this.name = name;
-        this.currentLocation = currentLocation;
-        this.truckType = truckType;
-        this.maxLoadCapacity = maxLoadCapacity;
-    }
 
     public boolean canCarry(Double weight) {
         return available && maxLoadCapacity >= weight;

@@ -34,17 +34,5 @@ public class Load {
 
     private String clientId;
 
-    public Load(String pickupLocation, String deliveryLocation, Double weight, LoadType loadType, String clientId) {
-        this.pickupLocation = pickupLocation;
-        this.deliveryLocation = deliveryLocation;
-        this.weight = weight;
-        this.loadType = loadType;
-        this.clientId = clientId;
-
-    }
-
-    public void setPickupLocation(String semicolonYabaLagos) {
-    }
-
 
 }
