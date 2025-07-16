@@ -41,7 +41,7 @@ public class BidServiceImpl {
             }
 
 
-            load.setStatus(LoadStatus.ASSIGNED);
+            load.setLoadStatus(LoadStatus.ASSIGNED);
             load.setUpdatedAt(java.time.LocalDateTime.now());
             loadRepository.save(load);
 

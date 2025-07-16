@@ -10,6 +10,9 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -29,6 +32,8 @@ public class Load {
     private Double weight;
     @NotBlank(message = "Load type is required")
     private LoadType loadType;
+
+    private LocalDateTime updatedAt;
 
     private LoadStatus loadStatus;
 

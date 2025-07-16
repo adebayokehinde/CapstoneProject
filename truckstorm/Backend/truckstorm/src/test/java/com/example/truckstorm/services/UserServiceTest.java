@@ -77,7 +77,7 @@ public class UserServiceTest {
     @Test
     void updateDriverProfile_ShouldReturnUpdatedDriver() {
         Driver updatedDriver = new Driver();
-        updatedDriver.setName("Updated Name");
+        updatedDriver.setFirstName("Updated Name");
 
         when(driverRepository.findById("driver1")).thenReturn(Optional.of(testDriver));
         when(driverRepository.save(any(Driver.class))).thenReturn(updatedDriver);

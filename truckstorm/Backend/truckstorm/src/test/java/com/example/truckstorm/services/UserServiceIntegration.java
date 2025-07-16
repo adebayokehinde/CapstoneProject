@@ -34,13 +34,13 @@ public class UserServiceIntegration {
     @BeforeEach
     void setUp() {
         testDriver = new Driver();
-        testDriver.setUserID("driver1");
-        testDriver.setName("Test Driver");
+        testDriver.setUserID(1L);
+        testDriver.setFirstName("Test Driver");
         driverRepository.save(testDriver);
 
         testClient = new Client();
-        testClient.setUserID("client1");
-        testClient.setName("Test Client");
+        testClient.setUserID(1L);
+        testClient.setFirstName("Test Client");
         clientRepository.save(testClient);
     }
 

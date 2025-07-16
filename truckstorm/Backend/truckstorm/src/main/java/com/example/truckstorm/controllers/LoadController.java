@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/api/Load")
-public class LoadControllers {
+public class LoadController {
 
     private final LoadService loadService;
 
-    public LoadControllers(LoadService loadService) {
+    public LoadController(LoadService loadService) {
         this.loadService = loadService;
     }
 
@@ -55,4 +55,12 @@ public class LoadControllers {
         loadService.deleteLoad(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Load>> getLoadsByStatus(@PathVariable LoadStatus status) {
+        List<Load> loads = loadService.getAllLoads();
+        return ResponseEntity.ok(loads);
+    }
+
+
 }

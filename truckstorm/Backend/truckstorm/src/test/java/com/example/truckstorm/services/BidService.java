@@ -1,6 +1,27 @@
 package com.example.truckstorm.services;
 
 
+import com.example.truckstorm.data.models.Driver;
+import com.example.truckstorm.data.models.DriverStatus;
+import com.example.truckstorm.data.models.Load;
+import com.example.truckstorm.data.models.Location;
+import com.example.truckstorm.data.repository.LoadRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.hamcrest.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+
 @ExtendWith(MockitoExtension.class)
 public class BidService {
     @Mock
@@ -18,20 +39,20 @@ public class BidService {
 
     @BeforeEach
     void setUp() {
-        // Setup test load
+
         testLoad = new Load();
         testLoad.setLoadID("load1");
         testLoad.setWeight(5000.0);
         testLoad.setPickupLocation(new Location("New York", 40.7128, -74.0060));
 
-        // Setup compatible driver
+
         compatibleDriver = new Driver();
         compatibleDriver.setUserID("driver1");
         compatibleDriver.setCurrentLocation("New York");
         compatibleDriver.setMaxLoadCapacity(10000.0);
         compatibleDriver.setDriverStatus(DriverStatus.AVAILABLE);
 
-        // Setup incompatible driver
+
         incompatibleDriver = new Driver();
         incompatibleDriver.setUserID("driver2");
         incompatibleDriver.setCurrentLocation("Chicago");

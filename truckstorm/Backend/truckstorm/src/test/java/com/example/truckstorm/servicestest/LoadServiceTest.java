@@ -2,7 +2,7 @@ package com.example.truckstorm.servicestest;
 
 import com.example.truckstorm.data.models.Load;
 import com.example.truckstorm.data.repository.LoadRepository;
-import com.example.truckstorm.exceptions.invalidLoadException;
+import com.example.truckstorm.exceptions.InvalidLoadException;
 import com.example.truckstorm.services.LoadServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class LoadServiceTest {
 
     @Test
     void whenFindNonExistentLoad_thenThrowException() {
-        assertThrows(invalidLoadException.class, () -> {
+        assertThrows(InvalidLoadException.class, () -> {
             loadService.getLoadById(999L);
         });
     }

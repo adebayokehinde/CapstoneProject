@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 
 @Entity
 @DiscriminatorValue("DRIVER")
@@ -16,7 +18,7 @@ import lombok.Setter;
 public class Driver extends User {
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Truck type is required")
+    @NotNull(message = "Truck type is required")
     @Column(nullable = false)
     private TruckType truckType;
 
@@ -25,9 +27,12 @@ public class Driver extends User {
     @Column(nullable = false)
     private Double maxLoadCapacity;
 
+    private DriverStatus driverStatus;
+
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean available = true;
 
+    private LocalDateTime updatedAt;
     @NotBlank(message = "Driver license number is required")
     @Column(name = "driver_license_number", nullable = false, unique = true)
     private String driverLicenseNumber;

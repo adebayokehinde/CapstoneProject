@@ -19,8 +19,8 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userID;
     @NotBlank(message = "Name is required")
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String phone;
     @NotBlank(message = "Name is required")
     private String email;
