@@ -26,7 +26,6 @@ public class LoadServiceImpl implements LoadService {
             throw new IllegalArgumentException("Load cannot be null");
         }
 
-        // Set default status if not provided
         if (load.getLoadStatus() == null) {
             load.setLoadStatus(LoadStatus.PENDING);
         }
