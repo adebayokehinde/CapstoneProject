@@ -1,6 +1,8 @@
 package com.example.truckstorm.controller;
 
 import com.example.truckstorm.data.models.Load;
+import com.example.truckstorm.data.models.LoadType;
+import com.example.truckstorm.data.models.TruckType;
 import com.example.truckstorm.data.repository.LoadRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -41,7 +43,7 @@ public class LoadControllerTest {
         load.setPickupLocation("semicolon yaba Lagos");
         load.setDeliveryLocation("church Gbagada lagos");
         load.setWeight(7500.0);
-        load.setLoadType("furniture");
+        load.setLoadType(LoadType.GENERAL);
         load.setClientId("client1");
 
         mockMvc.perform(post("/api/loads")
