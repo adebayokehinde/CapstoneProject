@@ -1,10 +1,8 @@
 package com.example.truckstorm.services;
 
 
-import com.example.truckstorm.data.models.Driver;
-import com.example.truckstorm.data.models.DriverStatus;
-import com.example.truckstorm.data.models.Load;
-import com.example.truckstorm.data.models.Location;
+import com.example.truckstorm.data.models.*;
+import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -41,7 +41,7 @@ public class BidService {
     void setUp() {
 
         testLoad = new Load();
-        testLoad.setLoadID("load1");
+        testLoad.setType("load1");
         testLoad.setWeight(5000.0);
         testLoad.setPickupLocation(new Location("New York", 40.7128, -74.0060));
 
@@ -74,8 +74,8 @@ public class BidService {
 
     @Test
     void matchLoadToDriver_ShouldAssignDriverAndUpdateStatus() {
-        when(loadRepository.findById("load1")).thenReturn(Optional.of(testLoad));
-        when(driverRepository.findById("driver1")).thenReturn(Optional.of(compatibleDriver));
+        when(loadRepository.findById(1L)).thenReturn(Optional.of(testLoad));
+        when(driverRepository.findById(1L)).thenReturn(Optional.of(compatibleDriver));
         when(loadRepository.save(any(Load.class))).thenReturn(testLoad);
 
         Load result = matchingService.matchLoadToDriver("load1", "driver1");
