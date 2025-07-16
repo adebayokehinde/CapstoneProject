@@ -22,7 +22,7 @@ public class LoadServiceTest {
 
     @Test
     void whenLoadIsPostedItCanBeSavedTest(){
-        Load load = new Load( );
+        Load load = new Load("semicolon yaba lagos", "navy town apapa, lagos", 10000.0, "house equipmant", "client1");
         Load saveLoad = loadService.postLoad(load);
 
         assertThat(saveLoad.getId()).isNotNull();

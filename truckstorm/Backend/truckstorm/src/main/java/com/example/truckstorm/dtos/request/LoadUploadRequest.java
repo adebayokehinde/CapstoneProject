@@ -1,26 +1,20 @@
-package com.example.truckstorm.data.models;
+package com.example.truckstorm.dtos.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
+import com.example.truckstorm.data.models.LoadStatus;
+import com.example.truckstorm.data.models.LoadType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@Entity
-public class Load {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class LoadUploadRequest {
     @NotBlank(message = "Pickup location is required")
     private String pickupLocation;
 
@@ -34,9 +28,9 @@ public class Load {
     private LoadType loadType;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
     private LoadStatus loadStatus;
     private Long clientId;
-
 
 }

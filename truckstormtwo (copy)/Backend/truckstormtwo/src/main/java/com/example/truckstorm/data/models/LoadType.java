@@ -1,0 +1,17 @@
+package com.example.truckstorm.data.models;
+
+public enum LoadType {
+    GENERAL,
+    PACKAGED_GOODS,
+    PERISHABLE_GOODS,
+    PHARMACEUTICALS,
+    CONSTRUCTION_MATERIALS,
+    MACHINERY,
+    TALL_EQUIPMENT,
+    INDUSTRIAL_PARTS,
+    HEAVY_MACHINERY,
+    CONSTRUCTION_EQUIPMENT,
+    LIQUIDS,
+    CHEMICALS,
+    VEHICLES
+}

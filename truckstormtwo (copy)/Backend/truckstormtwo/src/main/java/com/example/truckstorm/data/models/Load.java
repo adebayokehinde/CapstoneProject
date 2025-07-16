@@ -36,7 +36,7 @@ public class Load {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LoadStatus loadStatus;
-    private Long clientId;
+    private String clientId;
 
 
 }
