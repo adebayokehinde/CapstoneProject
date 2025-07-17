@@ -119,8 +119,7 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public List<LoadResponse> getLoadsByClientId(int clientId) {
-
-        return null;
+     return null;
     }
 
     @Override
@@ -138,7 +137,7 @@ public class LoadServiceImpl implements LoadService {
         load.setLoadStatus(newStatus);
         load.setUpdatedAt(LocalDateTime.now());
 
-        Load updatedLoad = loadRepository.save(load);
+        Load updatedLoad = loadRepository.saveAndFlush(load);
 
         LoadUpdateResponse loadResponse = new LoadUpdateResponse();
         loadResponse.setId(updatedLoad.getId());
@@ -151,6 +150,6 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public void deleteLoad(int id) {
-        
+//        to be implemented later
     }
 }
