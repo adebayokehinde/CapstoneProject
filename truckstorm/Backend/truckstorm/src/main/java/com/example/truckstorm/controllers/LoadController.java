@@ -4,6 +4,7 @@ import com.example.truckstorm.data.models.Load;
 import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
+import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.services.LoadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,28 +22,39 @@ public class LoadController {
     }
 
     @PostMapping
-    public ResponseEntity<LoadPostResponse> createLoad(@RequestBody LoadUploadRequest loadUploadRequest) {
+    public ResponseEntity<?> createLoad(@RequestBody LoadUploadRequest loadUploadRequest) {
         LoadPostResponse response = loadService.postLoad(loadUploadRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
-
-
-
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<Load> getLoadById(@PathVariable int id) {
-        Load load = loadService.getLoadById(id);
-        return ResponseEntity.ok(load);
+    public ResponseEntity<?> getLoadById(@PathVariable int id) {
+        LoadPostResponse loadPostResponse = loadService.getLoadById(id);
+        return ResponseEntity.ok(loadPostResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<Load>> getAllLoads() {
-        List<Load> loads = loadService.getAllLoads();
+    public ResponseEntity<?> getAllLoads() {
+        List<LoadResponse> loads = loadService.getAllLoads();
         return ResponseEntity.ok(loads);
     }
+
+
+
+
+
+
+
+
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<?> getLoadsByStatus(@PathVariable LoadStatus status) {
+        List<LoadResponse> loads = loadService.getAllLoads();
+        return ResponseEntity.ok(loads);
+    }
+
+
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<Load>> getLoadsByClientId(@PathVariable int clientId) {
@@ -64,11 +76,13 @@ public class LoadController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<Load>> getLoadsByStatus(@PathVariable LoadStatus status) {
-        List<Load> loads = loadService.getAllLoads();
-        return ResponseEntity.ok(loads);
-    }
+
+
+
+
+
+
+
 
 
 }

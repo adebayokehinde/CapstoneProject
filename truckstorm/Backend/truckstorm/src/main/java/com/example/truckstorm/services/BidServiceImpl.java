@@ -4,6 +4,7 @@ import com.example.truckstorm.data.models.*;
 import com.example.truckstorm.data.repository.BidRepository;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
+import com.example.truckstorm.dtos.response.LoadPostResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,20 +47,21 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public Driver assignDriverToLoad(int loadId, int driverId) {
-        Load load = loadService.getLoadById(loadId);
-        Driver driver = driverService.getDriverById(driverId);
-
-        if (!findCompatibleDriversForLoad(load).contains(driver)) {
-            throw new IllegalArgumentException("Driver is not compatible with this load");
-        }
-
-        load.setLoadStatus(LoadStatus.ASSIGNED);
-        load.setUpdatedAt(java.time.LocalDateTime.now());
-        loadRepository.save(load);
-
-        driver.setAvailable(false);
-        driver.setUpdatedAt(java.time.LocalDateTime.now());
-        return driverRepository.save(driver);
+//        LoadPostResponse load = loadService.getLoadById(loadId);
+//        Driver driver = driverService.getDriverById(driverId);
+//
+////        if (!findCompatibleDriversForLoad(load).contains(driver)) {
+//            throw new IllegalArgumentException("Driver is not compatible with this load");
+//        }
+//
+//        load.setLoadStatus(LoadStatus.ASSIGNED);
+////        load.setUpdatedAt(java.time.LocalDateTime.now());
+//        loadRepository.save(load);
+//
+//        driver.setAvailable(false);
+//        driver.setUpdatedAt(java.time.LocalDateTime.now());
+//        return driverRepository.save(driver);
+        return null;
     }
 
     @Override

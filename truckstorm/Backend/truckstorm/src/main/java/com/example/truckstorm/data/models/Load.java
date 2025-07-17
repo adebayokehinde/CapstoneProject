@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,12 +31,12 @@ public class Load {
     private Double weight;
     @NotBlank(message = "Load type is required")
     private LoadType loadType;
+    private int clientId;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LoadStatus loadStatus;
 
-    private int clientId;
 
 
 }

@@ -1,19 +1,16 @@
 package com.example.truckstorm.dtos.response;
 
-import com.example.truckstorm.data.models.Load;
 import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.data.models.LoadType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoadPostResponse {
+public class LoadResponse {
     private int PostResponseId;
     private int LoadId;
     private Boolean loadUpdated;
@@ -25,3 +22,5 @@ public class LoadPostResponse {
     private LoadStatus loadStatus;
     private int clientId;
 }
+
+

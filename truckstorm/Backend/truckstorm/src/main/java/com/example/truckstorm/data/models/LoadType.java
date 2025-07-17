@@ -13,5 +13,6 @@ public enum LoadType {
     CONSTRUCTION_EQUIPMENT,
     LIQUIDS,
     CHEMICALS,
-    VEHICLES
+    VEHICLES,
+    FRAGILE
 }
