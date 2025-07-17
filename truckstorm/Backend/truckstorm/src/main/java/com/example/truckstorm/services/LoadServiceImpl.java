@@ -127,7 +127,7 @@ public class LoadServiceImpl implements LoadService {
     public LoadUpdateResponse updateLoadStatus(int loadId, String status) {
         LoadStatus newStatus;
         try {
-            newStatus = LoadStatus.valueOf(status);
+            newStatus = LoadStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidLoadStatusException("Invalid load status: " + status);
         }
@@ -137,12 +137,13 @@ public class LoadServiceImpl implements LoadService {
 
         load.setLoadStatus(newStatus);
         load.setUpdatedAt(LocalDateTime.now());
-        loadRepository.save(load);
+
         Load updatedLoad = loadRepository.save(load);
+
         LoadUpdateResponse loadResponse = new LoadUpdateResponse();
         loadResponse.setId(updatedLoad.getId());
-        loadResponse.setUpdatedAt(LocalDateTime.now());
-        loadResponse.setLoadStatus(load.getLoadStatus());
+        loadResponse.setUpdatedAt(updatedLoad.getUpdatedAt());
+        loadResponse.setLoadStatus(updatedLoad.getLoadStatus());
 
         return loadResponse;
 
@@ -150,6 +151,6 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public void deleteLoad(int id) {
-
+        
     }
 }
