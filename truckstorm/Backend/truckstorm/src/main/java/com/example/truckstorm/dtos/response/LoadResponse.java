@@ -2,6 +2,7 @@ package com.example.truckstorm.dtos.response;
 
 import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.data.models.LoadType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class LoadResponse {
     private int PostResponseId;
     private int LoadId;

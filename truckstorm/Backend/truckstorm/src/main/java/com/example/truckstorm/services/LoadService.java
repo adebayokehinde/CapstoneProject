@@ -5,6 +5,7 @@ import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
+import com.example.truckstorm.dtos.response.LoadUpdateResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public interface LoadService {
     LoadPostResponse postLoad(LoadUploadRequest loadUploadRequest);
     LoadPostResponse getLoadById(int id);
     List<LoadResponse> getAllLoads();
-    List<Load> getLoadsByClientId(int clientId);
-    Load updateLoadStatus(int loadId, LoadStatus status);
+    List<LoadResponse> getLoadsByClientId(int clientId);
+    LoadUpdateResponse updateLoadStatus(int loadId, String status);
     void deleteLoad(int id);
 
 

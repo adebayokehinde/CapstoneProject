@@ -7,6 +7,7 @@ import com.example.truckstorm.data.repository.LoadRepository;
 import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
+import com.example.truckstorm.dtos.response.LoadUpdateResponse;
 import com.example.truckstorm.exceptions.InvalidLoadException;
 import com.example.truckstorm.exceptions.LoadNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -117,4 +118,20 @@ public class LoadServiceTest {
                         "Another location"
                 );
     }
+
+    @Test
+    public void whenLoadStatusIsUpdated_thenReturnUpdatedLoadStatus() {
+
+        LoadPostResponse savedLoad = loadService.postLoad(loadRequest);
+
+        LoadUpdateResponse updatedLoad = loadService.updateLoadStatus(savedLoad.getLoadId(), LoadStatus.ASSIGNED.toString());
+
+        assertThat(updatedLoad).isNotNull();
+        assertThat(updatedLoad.getId()).isEqualTo(savedLoad.getLoadId());
+        assertThat(updatedLoad.getLoadStatus()).isEqualTo(LoadStatus.ASSIGNED);
+
+        LoadPostResponse fetchedLoad = loadService.getLoadById(savedLoad.getLoadId());
+        assertThat(fetchedLoad.getLoadStatus()).isEqualTo(LoadStatus.ASSIGNED);
+    }
+
 }

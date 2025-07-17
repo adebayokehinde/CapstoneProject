@@ -7,6 +7,8 @@ import com.example.truckstorm.data.repository.LoadRepository;
 import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
+import com.example.truckstorm.dtos.response.LoadUpdateResponse;
+import com.example.truckstorm.exceptions.InvalidLoadStatusException;
 import com.example.truckstorm.exceptions.LoadNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -116,15 +118,34 @@ public class LoadServiceImpl implements LoadService {
     }
 
     @Override
-    public List<Load> getLoadsByClientId(int clientId) {
+    public List<LoadResponse> getLoadsByClientId(int clientId) {
 
         return null;
     }
 
     @Override
-    public Load updateLoadStatus(int loadId, LoadStatus status) {
+    public LoadUpdateResponse updateLoadStatus(int loadId, String status) {
+        LoadStatus newStatus;
+        try {
+            newStatus = LoadStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidLoadStatusException("Invalid load status: " + status);
+        }
 
-        return null;
+        Load load = loadRepository.findById(loadId)
+                .orElseThrow(() -> new LoadNotFoundException("Load not found with ID: " + loadId));
+
+        load.setLoadStatus(newStatus);
+        load.setUpdatedAt(LocalDateTime.now());
+        loadRepository.save(load);
+        Load updatedLoad = loadRepository.save(load);
+        LoadUpdateResponse loadResponse = new LoadUpdateResponse();
+        loadResponse.setId(updatedLoad.getId());
+        loadResponse.setUpdatedAt(LocalDateTime.now());
+        loadResponse.setLoadStatus(load.getLoadStatus());
+
+        return loadResponse;
+
     }
 
     @Override

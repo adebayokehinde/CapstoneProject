@@ -1,6 +1,7 @@
 package com.example.truckstorm.controllers;
 
 import com.example.truckstorm.data.models.Load;
+import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.services.LoadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class ClientController {
     }
 
     @GetMapping("/{clientId}/loads")
-    public ResponseEntity<List<Load>> getClients(@PathVariable int clientId) {
-        List<Load> loads = loadService.getLoadsByClientId(clientId);
+    public ResponseEntity<?> getClientsLoads(@PathVariable int clientId) {
+        List<LoadResponse> loads = loadService.getLoadsByClientId(clientId);
         return ResponseEntity.ok(loads);
     }
 

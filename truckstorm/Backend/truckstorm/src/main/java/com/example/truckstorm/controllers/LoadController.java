@@ -5,6 +5,7 @@ import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
+import com.example.truckstorm.dtos.response.LoadUpdateResponse;
 import com.example.truckstorm.services.LoadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,16 +58,16 @@ public class LoadController {
 
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<Load>> getLoadsByClientId(@PathVariable int clientId) {
-        List<Load> loads = loadService.getLoadsByClientId(clientId);
+    public ResponseEntity<?> getLoadsByClientId(@PathVariable int clientId) {
+        List<LoadResponse> loads = loadService.getLoadsByClientId(clientId);
         return ResponseEntity.ok(loads);
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<Load> updateLoadStatus(
+    public ResponseEntity<?> updateLoadStatus(
             @PathVariable int id,
-            @RequestParam LoadStatus status) {
-        Load updatedLoad = loadService.updateLoadStatus(id, status);
+            @RequestParam String status) {
+        LoadUpdateResponse updatedLoad = loadService.updateLoadStatus(id, status);
         return ResponseEntity.ok(updatedLoad);
     }
 
