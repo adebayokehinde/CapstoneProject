@@ -18,7 +18,7 @@ public class Client extends User {
             joinColumns = @JoinColumn(name = "client_id")
     )
     @Column(name = "load_id")
-    private List<String> loads;
+    private List<Integer> loads;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;

@@ -50,7 +50,7 @@ public class Driver extends User {
     private DriverStatus status = DriverStatus.AVAILABLE;
 
     @Embedded
-    private Location currentLocation;
+    private String currentLocation;
 
 
 }

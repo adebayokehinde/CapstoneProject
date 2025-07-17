@@ -45,7 +45,7 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Driver assignDriverToLoad(Long loadId, Long driverId) {
+    public Driver assignDriverToLoad(int loadId, int driverId) {
         Load load = loadService.getLoadById(loadId);
         Driver driver = driverService.getDriverById(driverId);
 
@@ -79,8 +79,8 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Bid getBidById(Long bidId) {
-        if (bidId == null) {
+    public Bid getBidById(int bidId) {
+        if (bidId == 0) {
             throw new IllegalArgumentException("Bid ID cannot be null");
         }
 
@@ -89,32 +89,35 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public List<Bid> getBidsByLoadId(Long loadId) {
-        if (loadId == null) {
+    public List<Bid> getBidsByLoadId(int loadId) {
+        if (loadId == 0) {
             throw new IllegalArgumentException("Load ID cannot be null");
         }
-        return bidRepository.findByLoadId(loadId);
+//        return bidRepository.findByLoadId(loadId);
+        return null;
     }
 
     @Override
-    public List<Bid> getBidsByDriverId(Long driverId) {
-        if (driverId == null) {
+    public List<Bid> getBidsByDriverId(int driverId) {
+        if (driverId == 0) {
             throw new IllegalArgumentException("Driver ID cannot be null");
         }
         return bidRepository.findByDriverId(driverId);
     }
 
     @Override
-    public List<Bid> getBidsByClientId(Long clientId) {
-        if (clientId == null) {
+    public List<Bid> getBidsByClientId(int clientId) {
+        if (clientId == 0) {
             throw new IllegalArgumentException("Client ID cannot be null");
         }
-        return bidRepository.findByClientId(clientId);
+//       return bidRepository.findByClientId(clientId);
+        return null;
     }
 
+
     @Override
-    public Bid updateBidStatus(Long bidId, BidStatus status) {
-        if (bidId == null) {
+    public Bid updateBidStatus(int bidId, BidStatus status) {
+        if (bidId == 0) {
             throw new IllegalArgumentException("Bid ID cannot be null");
         }
         if (status == null) {
@@ -127,7 +130,7 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Bid acceptBid(Long bidId) {
+    public Bid acceptBid(int bidId) {
         Bid bid = updateBidStatus(bidId, BidStatus.ACCEPTED);
 
         // When a bid is accepted, assign the driver to the load
@@ -139,13 +142,13 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Bid rejectBid(Long bidId) {
+    public Bid rejectBid(int bidId) {
         return updateBidStatus(bidId, BidStatus.REJECTED);
     }
 
     @Override
-    public void deleteBid(Long bidId) {
-        if (bidId == null) {
+    public void deleteBid(int bidId) {
+        if (bidId == 0) {
             throw new IllegalArgumentException("Bid ID cannot be null");
         }
 

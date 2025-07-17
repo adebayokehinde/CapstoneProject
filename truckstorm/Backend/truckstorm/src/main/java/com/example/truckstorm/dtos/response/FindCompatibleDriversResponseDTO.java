@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class FindCompatibleDriversResponseDTO {
     private Long loadId;
-    private List<DriverDTO> compatibleDrivers;
+//    private List<DriverDTO> compatibleDrivers;
 
 }

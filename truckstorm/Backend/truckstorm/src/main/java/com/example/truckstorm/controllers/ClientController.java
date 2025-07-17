@@ -22,7 +22,7 @@ public class ClientController {
     }
 
     @GetMapping("/{clientId}/loads")
-    public ResponseEntity<List<Load>> getClients(@PathVariable String clientId) {
+    public ResponseEntity<List<Load>> getClients(@PathVariable int clientId) {
         List<Load> loads = loadService.getLoadsByClientId(clientId);
         return ResponseEntity.ok(loads);
     }

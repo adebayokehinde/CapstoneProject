@@ -2,6 +2,8 @@ package com.example.truckstorm.controllers;
 
 import com.example.truckstorm.data.models.Load;
 import com.example.truckstorm.data.models.LoadStatus;
+import com.example.truckstorm.dtos.request.LoadUploadRequest;
+import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.services.LoadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,19 @@ public class LoadController {
     }
 
     @PostMapping
-    public ResponseEntity<Load> createLoad(@RequestBody Load load) {
-        Load savedLoad = loadService.postLoad(load);
-        return new ResponseEntity<>(savedLoad, HttpStatus.CREATED);
+    public ResponseEntity<LoadPostResponse> createLoad(@RequestBody LoadUploadRequest loadUploadRequest) {
+        LoadPostResponse response = loadService.postLoad(loadUploadRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+
+
+
+
+
+
     @GetMapping("/{id}")
-    public ResponseEntity<Load> getLoadById(@PathVariable Long id) {
+    public ResponseEntity<Load> getLoadById(@PathVariable int id) {
         Load load = loadService.getLoadById(id);
         return ResponseEntity.ok(load);
     }
@@ -37,21 +45,21 @@ public class LoadController {
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<Load>> getLoadsByClientId(@PathVariable String clientId) {
+    public ResponseEntity<List<Load>> getLoadsByClientId(@PathVariable int clientId) {
         List<Load> loads = loadService.getLoadsByClientId(clientId);
         return ResponseEntity.ok(loads);
     }
 
     @PutMapping("/{id}/status")
     public ResponseEntity<Load> updateLoadStatus(
-            @PathVariable Long id,
+            @PathVariable int id,
             @RequestParam LoadStatus status) {
         Load updatedLoad = loadService.updateLoadStatus(id, status);
         return ResponseEntity.ok(updatedLoad);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLoad(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteLoad(@PathVariable int id) {
         loadService.deleteLoad(id);
         return ResponseEntity.noContent().build();
     }

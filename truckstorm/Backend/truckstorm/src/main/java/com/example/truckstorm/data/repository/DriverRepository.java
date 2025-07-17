@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DriverRepository extends JpaRepository<Driver, Long> {
+public interface DriverRepository extends JpaRepository<Driver, Integer> {
     List<Driver> findByCurrentLocation(String currentLocation);
     List<Driver> findByCurrentLocationAndAvailable(String currentLocation, boolean available);
     List<Driver> findByAvailable(boolean available);

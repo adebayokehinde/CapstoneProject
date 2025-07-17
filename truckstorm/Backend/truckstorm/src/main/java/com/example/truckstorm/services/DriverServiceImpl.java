@@ -28,7 +28,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver updateDriverAvailability(Long driverId, boolean available) {
+    public Driver updateDriverAvailability(int driverId, boolean available) {
         Driver driver = getDriverById(driverId);
         driver.setAvailable(available);
         driver.setUpdatedAt(LocalDateTime.now());
@@ -44,8 +44,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver getDriverById(Long id) {
-        if (id == null) {
+    public Driver getDriverById(int id) {
+        if (id == 0) {
             throw new IllegalArgumentException("Driver ID cannot be null");
         }
         return driverRepository.findById(id)

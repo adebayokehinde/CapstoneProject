@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userID;
+    private int userID;
     @NotBlank(message = "Name is required")
     private String firstName;
     private String lastName;

@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Truck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank(message = "License plate is required")
     @Column(unique = true)

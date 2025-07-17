@@ -2,6 +2,8 @@ package com.example.truckstorm.dtos.request;
 
 import com.example.truckstorm.data.models.LoadStatus;
 import com.example.truckstorm.data.models.LoadType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -9,12 +11,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class LoadUploadRequest {
+    private int id;
     @NotBlank(message = "Pickup location is required")
     private String pickupLocation;
 
@@ -24,13 +26,10 @@ public class LoadUploadRequest {
     @NotNull(message = "Weight is required")
     @Positive(message = "Weight must be positive")
     private Double weight;
-    @NotBlank(message = "Load type is required")
+    @NotNull(message = "Load type is required")
+    @Enumerated(EnumType.STRING)
     private LoadType loadType;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-    private LoadStatus loadStatus;
-    private Long clientId;
+    private int clientId;
 
 }

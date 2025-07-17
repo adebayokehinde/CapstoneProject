@@ -29,7 +29,7 @@ public class DriversController {
 
     @PutMapping("/{id}/availability")
     public ResponseEntity<Driver> updateDriverAvailability(
-            @PathVariable Long id,
+            @PathVariable int id,
             @RequestParam boolean available) {
         Driver updatedDriver = driverService.updateDriverAvailability(id, available);
         return ResponseEntity.ok(updatedDriver);
@@ -43,7 +43,7 @@ public class DriversController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Driver> getDriverById(@PathVariable Long id) {
+    public ResponseEntity<?> getDriverById(@PathVariable int id) {
         Driver driver = driverService.getDriverById(id);
         return ResponseEntity.ok(driver);
     }

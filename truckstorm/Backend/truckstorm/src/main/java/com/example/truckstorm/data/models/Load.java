@@ -1,9 +1,6 @@
 package com.example.truckstorm.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -16,10 +13,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "loads")
 public class Load {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank(message = "Pickup location is required")
     private String pickupLocation;
@@ -36,7 +34,8 @@ public class Load {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LoadStatus loadStatus;
-    private Long clientId;
+
+    private int clientId;
 
 
 }

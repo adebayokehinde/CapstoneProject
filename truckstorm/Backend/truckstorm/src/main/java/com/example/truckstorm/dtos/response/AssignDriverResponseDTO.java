@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Setter
 public class AssignDriverResponseDTO {
     private Long assignmentId;
-    private DriverDTO driver;
-    private LoadDTO load;
+//    private DriverDTO driver;
+//    private LoadDTO load;
     private String status;
     private LocalDateTime assignmentTime;
 }
