@@ -30,10 +30,9 @@ public class LoadServiceTest {
     private LoadServiceImpl loadService;
     @Autowired
     private LoadRepository loadRepository;
-@Autowired
-
+    @Autowired
     private DriverRepository driverRepository;
-@Autowired
+    @Autowired
     private ClientRepository clientRepository;
 
     private Driver testDriver;

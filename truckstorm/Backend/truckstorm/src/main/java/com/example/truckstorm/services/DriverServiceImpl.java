@@ -2,6 +2,10 @@ package com.example.truckstorm.services;
 
 import com.example.truckstorm.data.models.Driver;
 import com.example.truckstorm.data.repository.DriverRepository;
+import com.example.truckstorm.dtos.request.DriverRequest;
+import com.example.truckstorm.dtos.request.DriverUpdate;
+import com.example.truckstorm.dtos.response.DriverResponse;
+import com.example.truckstorm.dtos.response.DriverUpdateResponse;
 import com.example.truckstorm.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,19 +24,21 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver registerDriver(Driver driver) {
+    public DriverResponse registerDriver(DriverRequest driver) {
         if (driver == null) {
             throw new IllegalArgumentException("Driver cannot be null");
         }
-        return driverRepository.save(driver);
+
+        return null;
     }
 
     @Override
-    public Driver updateDriverAvailability(int driverId, boolean available) {
+    public DriverUpdateResponse updateDriverAvailability(int driverId, boolean available) {
         Driver driver = getDriverById(driverId);
         driver.setAvailable(available);
         driver.setUpdatedAt(LocalDateTime.now());
-        return driverRepository.save(driver);
+        driverRepository.save(driver);
+        return null;
     }
 
     @Override

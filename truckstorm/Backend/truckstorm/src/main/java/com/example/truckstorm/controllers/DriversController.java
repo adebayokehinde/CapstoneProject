@@ -3,6 +3,9 @@ package com.example.truckstorm.controllers;
 
 
 import com.example.truckstorm.data.models.Driver;
+import com.example.truckstorm.dtos.request.DriverRequest;
+import com.example.truckstorm.dtos.response.DriverResponse;
+import com.example.truckstorm.dtos.response.DriverUpdateResponse;
 import com.example.truckstorm.services.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +25,16 @@ public class DriversController {
 
 
     @PostMapping
-    public ResponseEntity<Driver> registerDriver(@RequestBody Driver driver) {
-        Driver registeredDriver = driverService.registerDriver(driver);
+    public ResponseEntity<?> registerDriver(@RequestBody DriverRequest driver) {
+        DriverResponse registeredDriver = driverService.registerDriver(driver);
         return new ResponseEntity<>(registeredDriver, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/availability")
-    public ResponseEntity<Driver> updateDriverAvailability(
+    public ResponseEntity<?> updateDriverAvailability(
             @PathVariable int id,
             @RequestParam boolean available) {
-        Driver updatedDriver = driverService.updateDriverAvailability(id, available);
+        DriverUpdateResponse updatedDriver = driverService.updateDriverAvailability(id, available);
         return ResponseEntity.ok(updatedDriver);
     }
 
@@ -43,7 +46,7 @@ public class DriversController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getDriverById(@PathVariable int id) {
+    public ResponseEntity<Driver> getDriverById(@PathVariable int id) {
         Driver driver = driverService.getDriverById(id);
         return ResponseEntity.ok(driver);
     }

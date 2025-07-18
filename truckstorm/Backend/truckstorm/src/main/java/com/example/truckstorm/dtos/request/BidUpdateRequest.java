@@ -1,24 +1,19 @@
 package com.example.truckstorm.dtos.request;
 
-import jakarta.validation.constraints.NotNull;
+import com.example.truckstorm.data.models.BidStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-@Setter
+
 @Getter
+@Setter
 @NoArgsConstructor
-public class BidRequest {
-    @NotNull
+public class BidUpdateRequest {
     private BigDecimal price;
-
-    @NotNull
-    private int loadId;
-
-    @NotNull
-    private int driverId;
-    private String PickUpLocation;
+    private BidStatus bidStatus;
+    private LocalDateTime proposedPickupTime;
     private String note;
 }

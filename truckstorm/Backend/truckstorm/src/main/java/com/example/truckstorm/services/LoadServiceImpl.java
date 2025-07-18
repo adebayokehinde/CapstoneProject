@@ -10,9 +10,7 @@ import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.dtos.response.LoadUpdateResponse;
 import com.example.truckstorm.exceptions.InvalidLoadStatusException;
 import com.example.truckstorm.exceptions.LoadNotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +20,8 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-@Slf4j
 public class LoadServiceImpl implements LoadService {
 
-    private Logger logger = LoggerFactory.getLogger(LoadServiceImpl.class);
 
     private final LoadRepository loadRepository;
     private final ClientRepository clientRepository;
@@ -56,7 +52,6 @@ public class LoadServiceImpl implements LoadService {
         loadPostResponse.setLoadId(load.getId());
         loadPostResponse.setLoadStatus(LoadStatus.PENDING);
 
-        logger.debug("Post Load Response: {}", loadPostResponse);
 
         if (load.getId() != 0){
             loadPostResponse.setLoadStatus(load.getLoadStatus());
@@ -124,7 +119,7 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public LoadUpdateResponse updateLoadStatus(int loadId, String status) {
-        LoadStatus newStatus;
+        LoadStatus newStatus ;
         try {
             newStatus = LoadStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -145,7 +140,6 @@ public class LoadServiceImpl implements LoadService {
         loadResponse.setLoadStatus(updatedLoad.getLoadStatus());
 
         return loadResponse;
-
     }
 
     @Override
