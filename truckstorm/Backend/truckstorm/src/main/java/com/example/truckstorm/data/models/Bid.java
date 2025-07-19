@@ -38,8 +38,8 @@ public class Bid {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    private LocalDateTime proposedPickupTime;
-
+    private String pickupLocation;
+    private String destination;
     private Instant bidTimestamp;
 
     private Instant expiryTime;

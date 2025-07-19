@@ -19,6 +19,9 @@ public class BidRequest {
 
     @NotNull
     private int driverId;
-    private String PickUpLocation;
+    private double weight;
+    private int clientId;
+    private String pickUpLocation;
+    private String destination;
     private String note;
 }

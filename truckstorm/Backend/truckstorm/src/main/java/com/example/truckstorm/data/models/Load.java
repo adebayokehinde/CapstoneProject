@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -33,9 +34,13 @@ public class Load {
     private LoadType loadType;
     private int clientId;
 
+    @NotNull(message = "image is required")
+    private List<String> mediaUrls;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LoadStatus loadStatus;
+    private String note;
 
 
 

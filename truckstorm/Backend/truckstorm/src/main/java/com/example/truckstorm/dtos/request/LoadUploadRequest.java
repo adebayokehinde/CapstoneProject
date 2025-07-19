@@ -10,6 +10,9 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.Length;
+
+import java.util.List;
 
 
 @Getter
@@ -30,6 +33,11 @@ public class LoadUploadRequest {
     @Enumerated(EnumType.STRING)
     private LoadType loadType;
 
+    @NotBlank
+    @NotNull(message = "image is required")
+    private List<String> imageUrls;
+
     private int clientId;
+    private String note;
 
 }

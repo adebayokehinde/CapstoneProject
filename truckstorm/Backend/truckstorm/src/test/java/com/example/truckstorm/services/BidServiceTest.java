@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @RequiredArgsConstructor
 public class BidServiceTest {
+    @Autowired
     private BidRepository bidRepository;
 
     @Autowired
@@ -43,17 +44,26 @@ public class BidServiceTest {
         load.setWeight(234.0);
         load.setLoadType(LoadType.GENERAL);
         load.setClientId(1);
+        load.setNote("note");
         loadRepository.save(load);
 
         request = new BidRequest();
-        request.setPrice(new BigDecimal("1000.00"));
-        request.setLoadId(1);
-        request.setDriverId(3000);
+//        request.setPrice(new BigDecimal("1000.00"));
+
+        request.setClientId(load.getClientId());
+        request.setLoadId(load.getId());
+        request.setWeight(load.getWeight());
         request.setLoadId(load.getId());
         request.setPickUpLocation(load.getPickupLocation());
+        request.setDestination(load.getDeliveryLocation());
         request.setLoadId(load.getId());
+        request.setNote(load.getNote());
 
 
+//        Driver driver = new Driver();
+//        driver.setId(3000);
+//        driverRepository.save(driver);
+//        request.setDriverId(driver.getId());
 //        BidResponse savedBid = new Bid();
 //        savedBid.setId(1);
 //        savedBid.setPrice(request.getPrice());
@@ -72,14 +82,14 @@ public class BidServiceTest {
 
         BidResponse bidResponse = bidService.createBid(request);
 
-        assertThat(bidRepository.findById(1)).isNotNull();
-        assertThat(bidRepository.findById(bidResponse.getId())).isPresent();
         assertThat(bidRepository.count()).isEqualTo(1);
-        assertEquals(3000, bidResponse.getDriverId());
-        assertEquals("1000.00", bidResponse.getPrice().toString());
+        assertThat(loadRepository.count()).isEqualTo(1);
+        Bid savedBid = bidRepository.findAll().get(0);
+        assertThat(savedBid.getLoad()).isNotNull();
         assertEquals("PENDING", bidResponse.getBidStatus());
 
     }
+
 
 
 

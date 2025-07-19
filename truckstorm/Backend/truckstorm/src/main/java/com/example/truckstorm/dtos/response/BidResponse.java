@@ -16,7 +16,6 @@ public class BidResponse {
     private String bidStatus;
     private Integer loadId;
     private Integer driverId;
-    private LocalDateTime proposedPickupTime;
     private Instant bidTimestamp;
     private String note;
 

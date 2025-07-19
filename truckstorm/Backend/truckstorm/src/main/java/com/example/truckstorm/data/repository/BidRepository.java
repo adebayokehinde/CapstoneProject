@@ -12,7 +12,7 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
     @Query("SELECT b FROM Bid b WHERE b.driver.userID = :driverId")
     List<Bid> findByDriverId(@Param("driverId") int driverId);
 
-    @Query("SELECT b FROM Bid b WHERE b.client.id = :clientId")
+    @Query("SELECT b FROM Bid b WHERE b.client.userID = :clientId")
     List<Bid> findByClientId(@Param("clientId") int clientId);
 
     List<Bid> findByLoadId(int loadId);

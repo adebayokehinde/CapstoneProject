@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,30 +41,36 @@ public class BidServiceImpl implements BidService {
         this.bidRepository = bidRepository;
     }
 
-    public BidResponse createBid(BidRequest bidRequest) {
+public BidResponse createBid(BidRequest bidRequest) {
 
+    Load load = loadRepository.findById(bidRequest.getLoadId())
+        .orElseThrow(() -> new ResourceNotFoundException("Load not found with id: " + bidRequest.getLoadId()));
+
+    Bid bid = new Bid();
+    bid.setLoad(load);
+    bid.setBidStatus(BidStatus.PENDING);
+    bid.setBidTimestamp(Instant.now());
+    bid.setPickupLocation(load.getPickupLocation());
+    bid.setDestination(load.getDeliveryLocation());
+    bid.setNote(load.getNote());
+
+
+    Bid savedBid = bidRepository.save(bid);
+
+
+    BidResponse bidResponse = new BidResponse();
+        bidResponse.setId(savedBid.getId());
+        bidResponse.setPrice(savedBid.getPrice());
+        bidResponse.setLoadId(savedBid.getLoad().getId()) ;
+        bidResponse.setBidStatus(savedBid.getBidStatus().toString());
+        bidResponse.setNote(savedBid.getNote());
+        return bidResponse;
+    }
+
+    private void validatePrice(BidRequest bidRequest) {
         if (bidRequest.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new InvalidBidException("Bid price must be positive");
         }
-
-        Bid bid = new Bid();
-        bid.setPrice(bidRequest.getPrice());
-//        bid.setLoad(loadRepository.findById(bidRequest.getLoadId()));
-        bid.setBidStatus(BidStatus.PENDING);
-        bid.setBidTimestamp(Instant.now());
-        bid.setNote(bidRequest.getNote());
-
-        Bid savedBid = bidRepository.save(bid);
-
-        BidResponse bidResponse = new BidResponse();
-        bidResponse.setId(savedBid.getId());
-        bidResponse.setPrice(savedBid.getPrice());
-        bidResponse.setProposedPickupTime(savedBid.getProposedPickupTime());
-        bidResponse.setLoadId(savedBid.getLoad().getId());
-        bidResponse.setBidStatus(BidStatus.PENDING.toString());
-        bidResponse.setNote(savedBid.getNote());
-
-        return bidResponse;
     }
 
 

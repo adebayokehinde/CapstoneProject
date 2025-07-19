@@ -59,6 +59,7 @@ public class LoadServiceTest {
         loadRequest.setWeight(234.0);
         loadRequest.setLoadType(LoadType.GENERAL);
         loadRequest.setClientId(1);
+        loadRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
 
     }
     @AfterEach
