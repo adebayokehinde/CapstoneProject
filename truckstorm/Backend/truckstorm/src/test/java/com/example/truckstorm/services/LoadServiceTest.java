@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @RequiredArgsConstructor
 public class LoadServiceTest {
     @Autowired
-    private LoadServiceImpl loadService;
+    private LoadService loadService;
     @Autowired
     private LoadRepository loadRepository;
     @Autowired
@@ -72,7 +72,7 @@ public class LoadServiceTest {
 
         LoadPostResponse saveLoad = loadService.postLoad(loadRequest);
         assertThat(saveLoad.getLoadUpdated()).isNotNull();
-        assertThat(loadRepository.findById(saveLoad.getPostResponseId())).isPresent();
+        assertThat(loadRepository.findById(saveLoad.getLoadId())).isPresent();
         assertThat(loadRepository.count()).isEqualTo(1);
 
     }
