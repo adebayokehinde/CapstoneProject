@@ -16,6 +16,7 @@ public class DriverServiceTest {
     @BeforeEach
     public void setup() {
         DriverRegistrationRequest driverRegistrationRequest = new DriverRegistrationRequest();
+        driverRegistrationRequest.setDriverLicenseNumber("");
 
     }
     @Test

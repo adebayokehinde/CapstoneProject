@@ -1,6 +1,7 @@
 package com.example.truckstorm.data.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,8 +22,10 @@ public abstract class User {
     @NotBlank(message = "Name is required")
     private String firstName;
     private String lastName;
+
     private String phone;
     @NotBlank(message = "Name is required")
+    @Email
     private String email;
     @NotBlank(message = "Name is required")
     private String password;

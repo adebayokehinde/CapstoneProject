@@ -10,13 +10,15 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
 public class DriverRegistrationRequest {
-    private TruckType truckType;
+
+
 
     @NotNull(message = "Max load capacity is required")
     @Positive(message = "Max load capacity must be positive")
@@ -34,7 +36,10 @@ public class DriverRegistrationRequest {
     @Column(name = "driver_license_number", nullable = false, unique = true)
     private String driverLicenseNumber;
 
+    private String TruckLicenseNumber;
+    private String PlateNumber;
     private Truck truck;
+    private TruckType truckType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,5 +47,8 @@ public class DriverRegistrationRequest {
 
     @Embedded
     private String currentLocation;
+
+    @NotNull
+    private String imageUrl;
 
 }
