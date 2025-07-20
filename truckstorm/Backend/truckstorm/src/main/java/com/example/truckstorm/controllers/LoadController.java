@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/Load")
+@RequestMapping("/api/load")
 public class LoadController {
 
     private final LoadService loadService;

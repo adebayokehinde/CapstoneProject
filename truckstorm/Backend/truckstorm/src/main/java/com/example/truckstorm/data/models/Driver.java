@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("DRIVER")
@@ -19,12 +20,10 @@ public class Driver extends User {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Truck type is required")
-    @Column(nullable = false)
     private TruckType truckType;
 
-    @NotNull(message = "Max load capacity is required")
+
     @Positive(message = "Max load capacity must be positive")
-    @Column(nullable = false)
     private Double maxLoadCapacity;
 
     private DriverStatus driverStatus;
@@ -33,6 +32,7 @@ public class Driver extends User {
     private boolean available = true;
 
     private LocalDateTime updatedAt;
+
     @NotBlank(message = "Driver license number is required")
     @Column(name = "driver_license_number", nullable = false, unique = true)
     private String driverLicenseNumber;
@@ -50,7 +50,18 @@ public class Driver extends User {
     private DriverStatus status = DriverStatus.AVAILABLE;
 
     @Embedded
-    private String currentLocation;
+    private String currentLocation; // Could be replaced with GeoJSON later
+
+    @NotNull
+    private String profileImageUrl;
+
+    @OneToOne(mappedBy = "driver")
+    private Truck assignedTruck;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Truck> ownedTrucks;
+
+
 
 
 }

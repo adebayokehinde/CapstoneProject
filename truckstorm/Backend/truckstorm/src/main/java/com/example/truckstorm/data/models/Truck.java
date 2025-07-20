@@ -21,14 +21,19 @@ public class Truck {
     @NotNull(message = "Capacity is required")
     private Double capacity;
 
+    @OneToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver; // Null if no driver assigned
 
     @ManyToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver;
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner; // Changed to User (can be TruckOwner OR Driver)
 
     @Enumerated(EnumType.STRING)
     private TruckType truckType;
 
     @Enumerated(EnumType.STRING)
     private TruckStatus truckStatus;
+    private String model;
+
 }

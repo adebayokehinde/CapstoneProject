@@ -5,8 +5,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -24,9 +27,11 @@ public abstract class User {
     private String lastName;
 
     private String phone;
-    @NotBlank(message = "Name is required")
+
+    @Column(unique = true, nullable = false)
     @Email
     private String email;
+    @Column(nullable = false)
     @NotBlank(message = "Name is required")
     private String password;
     private String address;
@@ -40,6 +45,12 @@ public abstract class User {
     private UserType usertype;
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     private BigDecimal walletBalance;
 

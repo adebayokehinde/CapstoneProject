@@ -50,5 +50,7 @@ public class DriverRegistrationRequest {
 
     @NotNull
     private String imageUrl;
+    @NotNull
+    private String profileImageUrl;
 
 }
