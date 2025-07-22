@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,11 +56,11 @@ public class Driver extends User {
     @NotNull
     private String profileImageUrl;
 
-    @OneToOne(mappedBy = "driver")
+    @OneToOne(mappedBy = "driver", cascade = CascadeType.ALL)
     private Truck assignedTruck;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Truck> ownedTrucks;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Truck> ownedTrucks = new ArrayList<>();
 
 
 

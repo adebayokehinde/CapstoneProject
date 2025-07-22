@@ -1,8 +1,7 @@
 package com.example.truckstorm.controllers;
 
-
-
 import com.example.truckstorm.data.models.Driver;
+import com.example.truckstorm.dtos.request.DriverRegistrationRequest;
 import com.example.truckstorm.dtos.request.DriverRequest;
 import com.example.truckstorm.dtos.response.DriverResponse;
 import com.example.truckstorm.dtos.response.DriverUpdateResponse;
@@ -25,7 +24,7 @@ public class DriversController {
 
 
     @PostMapping
-    public ResponseEntity<?> registerDriver(@RequestBody DriverRequest driver) {
+    public ResponseEntity<?> registerDriver(@RequestBody DriverRegistrationRequest driver) {
         DriverResponse registeredDriver = driverService.registerDriver(driver);
         return new ResponseEntity<>(registeredDriver, HttpStatus.CREATED);
     }

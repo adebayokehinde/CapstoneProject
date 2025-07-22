@@ -12,6 +12,7 @@ import java.util.List;
 public interface DriverRepository extends JpaRepository<Driver, Integer> {
     List<Driver> findByCurrentLocation(String currentLocation);
     List<Driver> findByCurrentLocationAndAvailable(String currentLocation, boolean available);
+    Driver findByEmail(String email);
     List<Driver> findByAvailable(boolean available);
     List<Driver> findByDriverStatus(DriverStatus status);
 }

@@ -17,7 +17,7 @@ import java.util.List;
 public class ClientController {
 
     private final LoadService loadService;
-    @Autowired
+
     public ClientController(LoadService loadService) {
         this.loadService = loadService;
     }

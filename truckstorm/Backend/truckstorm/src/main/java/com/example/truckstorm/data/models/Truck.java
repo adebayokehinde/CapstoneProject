@@ -1,5 +1,6 @@
 package com.example.truckstorm.data.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,18 +17,18 @@ public class Truck {
 
     @NotBlank(message = "License plate is required")
     @Column(unique = true)
-    private String truckLicensePlateNumber;
+    private String truckLicensedPlateNumber;
 
     @NotNull(message = "Capacity is required")
     private Double capacity;
 
-    @OneToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver; // Null if no driver assigned
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id", nullable = false)
+    private Driver driver;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
-    private User owner; // Changed to User (can be TruckOwner OR Driver)
+    private User owner;
 
     @Enumerated(EnumType.STRING)
     private TruckType truckType;

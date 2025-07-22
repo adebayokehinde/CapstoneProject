@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@DiscriminatorValue("Truck")
+@DiscriminatorValue("truck_owner")
 public class TruckOwner extends User {
     private String companyName;
 

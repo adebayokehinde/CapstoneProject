@@ -32,7 +32,8 @@ public abstract class User {
     @Email
     private String email;
     @Column(nullable = false)
-    @NotBlank(message = "Name is required")
+
+    @NotBlank(message = "Password is required")
     private String password;
     private String address;
 
