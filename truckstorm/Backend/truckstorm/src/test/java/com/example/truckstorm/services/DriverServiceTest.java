@@ -1,12 +1,18 @@
 package com.example.truckstorm.services;
 
 import com.example.truckstorm.data.models.Driver;
+import com.example.truckstorm.data.models.Truck;
+import com.example.truckstorm.data.models.TruckOwner;
 import com.example.truckstorm.data.models.TruckType;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
+import com.example.truckstorm.dtos.request.DriverLoginRequest;
 import com.example.truckstorm.dtos.request.DriverRegistrationRequest;
 import com.example.truckstorm.dtos.request.TruckDTO;
+import com.example.truckstorm.dtos.response.DriverLoginResponse;
 import com.example.truckstorm.dtos.response.DriverResponse;
+import com.example.truckstorm.exceptions.DuplicateDriverException;
+import com.example.truckstorm.exceptions.TruckAssignmentException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RequiredArgsConstructor
@@ -60,7 +66,6 @@ public class DriverServiceTest {
     public void TestThatDriverCanRegisterWithTruck(){
 
 
-
         DriverResponse response = driverService.registerDriver(driverRegistrationRequest);
 
         assertNotNull(response.getId());
@@ -75,5 +80,78 @@ public class DriverServiceTest {
 
     }
 
+    @Test
+    public void TestThatDriverCanRegisterWithOutTruck(){
+        
+
+        driverRegistrationRequest.setOwnsTruck(false);
+        DriverResponse response = driverService.registerDriver(driverRegistrationRequest);
+
+        assertNotNull(response.getId());
+        assertEquals("DriverName", response.getFirstName());
+        assertThat(response.getTruckType()).isNull();
+
+        Driver savedDriver = driverRepository.findById(response.getId()).orElseThrow();
+        assertThat(savedDriver.getAssignedTruck()).isNull();
+
+
+    }
+
+    @Test
+    public void duplicateDriverCanNotBeRegistered() {
+        DriverRegistrationRequest sameDriverRegistration = new DriverRegistrationRequest();
+        sameDriverRegistration.setFirstName("DriverName");
+        sameDriverRegistration.setEmail("email@Gmail.com");
+        sameDriverRegistration.setPassword("password");
+        sameDriverRegistration.setDriverLicenseNumber("DriversLicense123456");
+        sameDriverRegistration.setProfileImageUrl("profileImage");
+        sameDriverRegistration.setOwnsTruck(true);
+
+
+        TruckDTO truckDTO2 = new TruckDTO();
+        truckDTO2.setTruckLicensePlateNumber("TRUCK123");
+        truckDTO2.setCapacity(5000.0);
+        truckDTO2.setTruckType(TruckType.FLATBED);
+        driverRegistrationRequest.setTruckDetails(truckDTO2);
+
+        DriverResponse response = driverService.registerDriver(driverRegistrationRequest);
+        
+        assertThrows(DuplicateDriverException.class,()-> driverService.registerDriver(sameDriverRegistration));
+
+        assertNotNull(response.getId());
+        assertEquals("DriverName", response.getFirstName());
+        assertEquals(TruckType.FLATBED, response.getTruckType());
+
+        Driver savedDriver = driverRepository.findById(response.getId()).orElseThrow();
+        assertNotNull(savedDriver.getAssignedTruck());
+        assertEquals("TRUCK123", savedDriver.getAssignedTruck().getTruckLicensedPlateNumber());
+        
+        
+        
+    }
+
+    @Test
+    public void driverCanLoginAfterRegistering() {
+        DriverRegistrationRequest secondDriver = new DriverRegistrationRequest();
+        secondDriver.setFirstName("DriverName2");
+        secondDriver.setEmail("C");
+        secondDriver.setPassword("password2");
+        secondDriver.setDriverLicenseNumber("DriversLicense123452");
+        secondDriver.setProfileImageUrl("profileImage2");
+        secondDriver.setOwnsTruck(false);
+
+        DriverResponse response = driverService.registerDriver(driverRegistrationRequest);
+        DriverResponse secondResponse = driverService.registerDriver(secondDriver);
+        assertEquals(2, driverRepository.count());
+        DriverLoginRequest loginDetails = new DriverLoginRequest();
+        loginDetails.setEmail("DriverName2");
+        loginDetails.setPassword("DriverName2");
+        DriverLoginResponse loginResponse = driverService.loginDriver(loginDetails);
+
+        assertThat(loginResponse).isNotNull();
+
+
+
+    }
 
 }

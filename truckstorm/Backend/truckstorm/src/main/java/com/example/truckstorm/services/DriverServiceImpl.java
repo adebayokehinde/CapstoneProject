@@ -5,9 +5,13 @@ import com.example.truckstorm.data.models.DriverStatus;
 import com.example.truckstorm.data.models.Truck;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.TruckRepository;
+import com.example.truckstorm.dtos.request.DriverLoginRequest;
 import com.example.truckstorm.dtos.request.DriverRegistrationRequest;
+import com.example.truckstorm.dtos.response.DriverLoginResponse;
 import com.example.truckstorm.dtos.response.DriverResponse;
 import com.example.truckstorm.dtos.response.DriverUpdateResponse;
+import com.example.truckstorm.exceptions.DuplicateDriverException;
+import com.example.truckstorm.exceptions.InvalidPasswordException;
 import com.example.truckstorm.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +37,7 @@ public class DriverServiceImpl implements DriverService {
         if (driverRequest == null) {
             throw new IllegalArgumentException("Driver cannot be null");
         }
+        validateExistence(driverRequest);
 
         Driver driver = new Driver();
         driver.setEmail(driverRequest.getEmail());
@@ -50,11 +55,18 @@ public class DriverServiceImpl implements DriverService {
             truck.setTruckLicensedPlateNumber(driverRequest.getTruckDetails().getTruckLicensePlateNumber());
             truck.setCapacity(driverRequest.getTruckDetails().getCapacity());
             truck.setTruckType(driverRequest.getTruckDetails().getTruckType());
+
+            System.out.print("TO CHECK THE LICENCE CONTENT 2 OF THE DTO" + driverRequest.getTruckDetails().getTruckLicensePlateNumber());
+            System.out.printf("\n TO CHECK THE EMAIL for persistence CONTENT 2 OF THE DTO (%d)", driverRepository.findByEmail(driverRequest.getEmail()).getUserID());
+
             truck.setOwner(driverRepository.findByEmail(driverRequest.getEmail()));
-            driver.getOwnedTrucks().add(truck);
             truck.setDriver(driverRepository.findByEmail(driverRequest.getEmail()));
+
             truckRepository.save(truck);
-            driver.setAssignedTruck(truckRepository.findByTruckLicensedPlateNumber(truck.getTruckLicensedPlateNumber()));
+            driverRepository.findByEmail(driverRequest.getEmail()).getOwnedTrucks()
+                    .add(truckRepository.findByTruckLicensedPlateNumber(truck.getTruckLicensedPlateNumber()));
+            driverRepository.findByEmail(driverRequest.getEmail())
+                    .setAssignedTruck(truckRepository.findByTruckLicensedPlateNumber(truck.getTruckLicensedPlateNumber()));
         }
 
         DriverResponse driverResponse = new DriverResponse();
@@ -70,6 +82,33 @@ public class DriverServiceImpl implements DriverService {
         return driverResponse;
     }
 
+    private void validateExistence(DriverRegistrationRequest driverRequest) {
+        for  (Driver driver : driverRepository.findAll()) {
+            if (driverRequest.getEmail().equals(driver.getEmail())) {
+                throw new DuplicateDriverException("Driver already exists");
+            }
+        }
+
+    }
+    @Override
+    public DriverLoginResponse loginDriver(DriverLoginRequest driverLoginRequest){
+        for(Driver driver : driverRepository.findAll()) {
+            if (driver.getEmail().equals(driverLoginRequest.getEmail())) {
+                validatePassword(driverLoginRequest);
+            }
+
+        }
+
+        DriverLoginResponse driverLoginResponse = new DriverLoginResponse();
+        return driverLoginResponse;
+    }
+
+    private boolean validatePassword(DriverLoginRequest driverLoginRequest) {
+        for(Driver driver : driverRepository.findAll()) {
+            if (driver.getPassword().equals(driverLoginRequest.getPassword())) return true;
+        }
+        throw new InvalidPasswordException("Invalid Password");
+    }
 
 
     @Override
