@@ -12,6 +12,7 @@ import com.example.truckstorm.dtos.request.TruckDTO;
 import com.example.truckstorm.dtos.response.DriverLoginResponse;
 import com.example.truckstorm.dtos.response.DriverResponse;
 import com.example.truckstorm.exceptions.DuplicateDriverException;
+import com.example.truckstorm.exceptions.InvalidDriverException;
 import com.example.truckstorm.exceptions.TruckAssignmentException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
@@ -125,33 +126,49 @@ public class DriverServiceTest {
         Driver savedDriver = driverRepository.findById(response.getId()).orElseThrow();
         assertNotNull(savedDriver.getAssignedTruck());
         assertEquals("TRUCK123", savedDriver.getAssignedTruck().getTruckLicensedPlateNumber());
-        
-        
-        
+
     }
 
     @Test
     public void driverCanLoginAfterRegistering() {
-        DriverRegistrationRequest secondDriver = new DriverRegistrationRequest();
-        secondDriver.setFirstName("DriverName2");
-        secondDriver.setEmail("C");
-        secondDriver.setPassword("password2");
-        secondDriver.setDriverLicenseNumber("DriversLicense123452");
-        secondDriver.setProfileImageUrl("profileImage2");
-        secondDriver.setOwnsTruck(false);
+        DriverRegistrationRequest secondDriverRequest = new DriverRegistrationRequest();
+        secondDriverRequest.setFirstName("DriverName2");
+        secondDriverRequest.setEmail("Driver2@gmail.com");
+        secondDriverRequest.setPassword("password2");
+        secondDriverRequest.setDriverLicenseNumber("DriversLicense123452");
+        secondDriverRequest.setProfileImageUrl("profileImage2");
+        secondDriverRequest.setOwnsTruck(false);
 
-        DriverResponse response = driverService.registerDriver(driverRegistrationRequest);
-        DriverResponse secondResponse = driverService.registerDriver(secondDriver);
+        driverService.registerDriver(driverRegistrationRequest);
+        driverService.registerDriver(secondDriverRequest);
         assertEquals(2, driverRepository.count());
         DriverLoginRequest loginDetails = new DriverLoginRequest();
-        loginDetails.setEmail("DriverName2");
-        loginDetails.setPassword("DriverName2");
+        loginDetails.setEmail("Driver2@gmail.com");
+        loginDetails.setPassword("password2");
         DriverLoginResponse loginResponse = driverService.loginDriver(loginDetails);
-
         assertThat(loginResponse).isNotNull();
-
-
+        assertEquals(loginResponse.getUserId(),driverRepository.findByEmail("Driver2@gmail.com").getUserID());
 
     }
+    @Test
+    public void invalidDriverCanNotLogin() {
+        DriverRegistrationRequest secondDriverRequest = new DriverRegistrationRequest();
+        secondDriverRequest.setFirstName("DriverName2");
+        secondDriverRequest.setEmail("Driver2@gmail.com");
+        secondDriverRequest.setPassword("password2");
+        secondDriverRequest.setDriverLicenseNumber("DriversLicense123452");
+        secondDriverRequest.setProfileImageUrl("profileImage2");
+        secondDriverRequest.setOwnsTruck(false);
+
+        driverService.registerDriver(driverRegistrationRequest);
+        driverService.registerDriver(secondDriverRequest);
+        assertEquals(2, driverRepository.count());
+        DriverLoginRequest loginDetails = new DriverLoginRequest();
+        loginDetails.setEmail("invalid@gmail.com");
+        loginDetails.setPassword("password2");
+        assertThrows(InvalidDriverException.class,()->driverService.loginDriver(loginDetails));
+        
+    }
+
 
 }

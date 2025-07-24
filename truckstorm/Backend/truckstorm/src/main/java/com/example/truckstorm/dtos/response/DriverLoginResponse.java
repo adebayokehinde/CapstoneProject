@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class DriverLoginResponse {
-    private String userId;
+    private int userId;
     private String message;
 }

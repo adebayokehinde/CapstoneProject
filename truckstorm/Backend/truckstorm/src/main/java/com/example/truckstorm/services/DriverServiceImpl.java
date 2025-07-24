@@ -11,6 +11,7 @@ import com.example.truckstorm.dtos.response.DriverLoginResponse;
 import com.example.truckstorm.dtos.response.DriverResponse;
 import com.example.truckstorm.dtos.response.DriverUpdateResponse;
 import com.example.truckstorm.exceptions.DuplicateDriverException;
+import com.example.truckstorm.exceptions.InvalidDriverException;
 import com.example.truckstorm.exceptions.InvalidPasswordException;
 import com.example.truckstorm.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -83,30 +84,28 @@ public class DriverServiceImpl implements DriverService {
     }
 
     private void validateExistence(DriverRegistrationRequest driverRequest) {
-        for  (Driver driver : driverRepository.findAll()) {
-            if (driverRequest.getEmail().equals(driver.getEmail())) {
-                throw new DuplicateDriverException("Driver already exists");
-            }
-        }
-
+        if (driverRepository.findByEmail(driverRequest.getEmail()) != null)throw new DuplicateDriverException("Driver already exists");
     }
+
+
     @Override
     public DriverLoginResponse loginDriver(DriverLoginRequest driverLoginRequest){
-        for(Driver driver : driverRepository.findAll()) {
-            if (driver.getEmail().equals(driverLoginRequest.getEmail())) {
-                validatePassword(driverLoginRequest);
-            }
 
-        }
+        validateDriverExistence(driverLoginRequest);
+        int userId = validatePassword(driverLoginRequest);
 
         DriverLoginResponse driverLoginResponse = new DriverLoginResponse();
+        driverLoginResponse.setMessage("Login successful");
+        driverLoginResponse.setUserId(userId);
         return driverLoginResponse;
     }
 
-    private boolean validatePassword(DriverLoginRequest driverLoginRequest) {
-        for(Driver driver : driverRepository.findAll()) {
-            if (driver.getPassword().equals(driverLoginRequest.getPassword())) return true;
-        }
+    private void validateDriverExistence(DriverLoginRequest driverLoginRequest) {
+        if (driverRepository.findByEmail(driverLoginRequest.getEmail()) == null) throw new InvalidDriverException("Driver DoseNot Exist");
+    }
+    private int validatePassword(DriverLoginRequest driverLoginRequest) {
+        if (driverRepository.findByEmail(driverLoginRequest.getEmail()).getPassword()
+                .equals(driverLoginRequest.getPassword())) return driverRepository.findByEmail(driverLoginRequest.getEmail()).getUserID();
         throw new InvalidPasswordException("Invalid Password");
     }
 
