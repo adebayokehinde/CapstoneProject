@@ -1,8 +1,7 @@
 package com.example.truckstorm.services;
 
-import com.example.truckstorm.data.models.Driver;
-import com.example.truckstorm.data.models.DriverStatus;
-import com.example.truckstorm.data.models.Truck;
+import com.example.truckstorm.data.models.*;
+import com.example.truckstorm.data.repository.BidRepository;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.TruckRepository;
 import com.example.truckstorm.dtos.request.DriverLoginRequest;
@@ -27,10 +26,12 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
     public final TruckRepository truckRepository;
+    public final BidRepository bidRepository;
 
-    public DriverServiceImpl(DriverRepository driverRepository,  TruckRepository truckRepository) {
+    public DriverServiceImpl(DriverRepository driverRepository,  TruckRepository truckRepository, BidRepository bidRepository) {
         this.driverRepository = driverRepository;
         this.truckRepository = truckRepository;
+        this.bidRepository = bidRepository;
     }
 
     @Override
@@ -139,5 +140,10 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
+    }
+    @Override
+    public List<Bid> viewAllBids(){
+        //will add geographical conditions/range
+        return bidRepository.findAllByBidStatus(BidStatus.PENDING);
     }
 }

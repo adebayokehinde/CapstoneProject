@@ -6,13 +6,13 @@ import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
 import com.example.truckstorm.dtos.request.BidRequest;
 import com.example.truckstorm.dtos.response.BidResponse;
+import com.example.truckstorm.dtos.response.LoadPostResponse;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,7 +78,7 @@ public class BidServiceTest {
     }
 
     @Test
-    void createBid_ValidRequest_ReturnsBidResponse() {
+    void BidIsCreatedOnLoadCreation() {
 
         BidResponse bidResponse = bidService.createBid(request);
 
@@ -89,6 +89,7 @@ public class BidServiceTest {
         assertEquals("PENDING", bidResponse.getBidStatus());
 
     }
+
 
 
 

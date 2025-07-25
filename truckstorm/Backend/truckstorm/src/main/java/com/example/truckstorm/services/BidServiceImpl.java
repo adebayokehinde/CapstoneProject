@@ -6,7 +6,6 @@ import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
 import com.example.truckstorm.dtos.request.BidRequest;
 import com.example.truckstorm.dtos.response.*;
-import com.example.truckstorm.exceptions.DriverNotAvailableException;
 import com.example.truckstorm.exceptions.InvalidBidException;
 import com.example.truckstorm.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

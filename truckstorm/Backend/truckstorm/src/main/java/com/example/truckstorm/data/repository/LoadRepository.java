@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface LoadRepository extends JpaRepository<Load, Integer> {
+    Load findByClientId(int clientId);
+    Load findByClientIdAndWeight(int clientId, double weight);
 
 
 }

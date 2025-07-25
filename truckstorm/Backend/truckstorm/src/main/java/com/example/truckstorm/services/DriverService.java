@@ -1,5 +1,6 @@
 package com.example.truckstorm.services;
 
+import com.example.truckstorm.data.models.Bid;
 import com.example.truckstorm.data.models.Driver;
 import com.example.truckstorm.dtos.request.DriverLoginRequest;
 import com.example.truckstorm.dtos.request.DriverRegistrationRequest;
@@ -19,4 +20,5 @@ public interface DriverService {
     List<Driver> findAvailableDriversInRegion(String region);
     Driver getDriverById(int id);
     List<Driver> getAllDrivers();
+    List<Bid> viewAllBids();
 }

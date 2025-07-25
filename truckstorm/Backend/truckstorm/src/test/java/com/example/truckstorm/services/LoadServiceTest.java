@@ -1,6 +1,7 @@
 package com.example.truckstorm.services;
 
 import com.example.truckstorm.data.models.*;
+import com.example.truckstorm.data.repository.BidRepository;
 import com.example.truckstorm.data.repository.ClientRepository;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
@@ -8,7 +9,6 @@ import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.dtos.response.LoadUpdateResponse;
-import com.example.truckstorm.exceptions.InvalidLoadException;
 import com.example.truckstorm.exceptions.LoadNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +23,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+
 @SpringBootTest()
 @RequiredArgsConstructor
 public class LoadServiceTest {
@@ -34,6 +36,8 @@ public class LoadServiceTest {
     private DriverRepository driverRepository;
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private BidRepository bidRepository;
 
     private Driver testDriver;
     private Client testClient;
@@ -64,7 +68,9 @@ public class LoadServiceTest {
     }
     @AfterEach
     public void tearDown() {
+        bidRepository.deleteAll();
         loadRepository.deleteAll();
+
 
     }
 
@@ -102,7 +108,7 @@ public class LoadServiceTest {
         secondRequest.setDeliveryLocation("Different destination");
         secondRequest.setWeight(100.0);;
         secondRequest.setLoadType(LoadType.GENERAL);
-        secondRequest.setClientId(1);
+        secondRequest.setClientId(2);
 
         loadService.postLoad(loadRequest);
         loadService.postLoad(secondRequest);
@@ -133,5 +139,15 @@ public class LoadServiceTest {
         LoadPostResponse fetchedLoad = loadService.getLoadById(savedLoad.getLoadId());
 //        assertThat(fetchedLoad.getLoadStatus()).isEqualTo(LoadStatus.ASSIGNED);
     }
+
+    @Test
+    void whenLoadIsCreatedWhenBidIsCreatedTest(){
+        LoadPostResponse savedLoad = loadService.postLoad(loadRequest);
+
+        assertThat(savedLoad.getLoadUpdated()).isNotNull();
+        assertThat(bidRepository.count()).isEqualTo(1);
+
+    }
+
 
 }

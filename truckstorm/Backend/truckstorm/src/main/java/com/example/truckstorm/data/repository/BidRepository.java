@@ -1,6 +1,7 @@
 package com.example.truckstorm.data.repository;
 
 import com.example.truckstorm.data.models.Bid;
+import com.example.truckstorm.data.models.BidStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,5 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
     List<Bid> findByClientId(@Param("clientId") int clientId);
 
     List<Bid> findByLoadId(int loadId);
-
-
-
+    List<Bid> findAllByBidStatus(BidStatus bidStatus);
 }

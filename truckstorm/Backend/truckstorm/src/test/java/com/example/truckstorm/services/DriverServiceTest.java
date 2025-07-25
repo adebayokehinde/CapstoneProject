@@ -1,13 +1,12 @@
 package com.example.truckstorm.services;
 
-import com.example.truckstorm.data.models.Driver;
-import com.example.truckstorm.data.models.Truck;
-import com.example.truckstorm.data.models.TruckOwner;
-import com.example.truckstorm.data.models.TruckType;
+import com.example.truckstorm.data.models.*;
+import com.example.truckstorm.data.repository.BidRepository;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
 import com.example.truckstorm.dtos.request.DriverLoginRequest;
 import com.example.truckstorm.dtos.request.DriverRegistrationRequest;
+import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.request.TruckDTO;
 import com.example.truckstorm.dtos.response.DriverLoginResponse;
 import com.example.truckstorm.dtos.response.DriverResponse;
@@ -21,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +37,8 @@ public class DriverServiceTest {
     private LoadService loadService;
     @Autowired
     private LoadRepository loadRepository;
+    @Autowired
+    private BidRepository bidRepository;
 
     DriverRegistrationRequest driverRegistrationRequest;
 
@@ -49,7 +52,6 @@ public class DriverServiceTest {
         driverRegistrationRequest.setDriverLicenseNumber("DriversLicense123456");
         driverRegistrationRequest.setProfileImageUrl("profileImage");
         driverRegistrationRequest.setOwnsTruck(true);
-
 
         TruckDTO truckDTO = new TruckDTO();
         truckDTO.setTruckLicensePlateNumber("TRUCK123");
@@ -168,6 +170,57 @@ public class DriverServiceTest {
         loginDetails.setPassword("password2");
         assertThrows(InvalidDriverException.class,()->driverService.loginDriver(loginDetails));
         
+    }
+    @Test
+    public void DriverCanViewAvailablePendingBids(){
+
+        LoadUploadRequest loadRequest = new LoadUploadRequest();
+
+        loadRequest.setPickupLocation("semicolon sabo yaba lagos");
+        loadRequest.setDeliveryLocation("ozone sabo yaba lagos");
+        loadRequest.setWeight(234.0);
+        loadRequest.setLoadType(LoadType.GENERAL);
+        loadRequest.setClientId(1);
+        loadRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
+
+        loadService.postLoad(loadRequest);
+
+        LoadUploadRequest loadRequestTwo = new LoadUploadRequest();
+
+        loadRequestTwo.setPickupLocation("semicolon sabo yaba lagos");
+        loadRequestTwo.setDeliveryLocation("ozone sabo yaba lagos");
+        loadRequestTwo.setWeight(244.0);
+        loadRequestTwo.setLoadType(LoadType.CHEMICALS);
+        loadRequestTwo.setClientId(2);
+        loadRequestTwo.setImageUrls( List.of("imageUrl1","imageUrl2"));
+
+        loadService.postLoad(loadRequestTwo);
+
+        Bid acceptedBid = new Bid();
+        acceptedBid.setDestination("sabo");
+        acceptedBid.setPickupLocation("semicolon sabo yaba");
+        acceptedBid.setWeight(244.0);
+        acceptedBid.setBidStatus(BidStatus.ACCEPTED);
+        bidRepository.save(acceptedBid);
+
+        DriverResponse response = driverService.registerDriver(driverRegistrationRequest);
+        assertNotNull(response.getId());
+        assertEquals("DriverName", response.getFirstName());
+        assertEquals(TruckType.FLATBED, response.getTruckType());
+
+        List<Bid> bids = driverService.viewAllBids();
+        assertNotNull(bids);
+        assertEquals(2, bids.size());
+        assertEquals(3, bidRepository.count() );
+
+    }
+
+    @Test
+    public void driverCanBid(){
+
+    
+
+
     }
 
 

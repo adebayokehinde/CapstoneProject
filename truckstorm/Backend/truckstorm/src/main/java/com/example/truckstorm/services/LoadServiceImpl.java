@@ -1,10 +1,15 @@
 package com.example.truckstorm.services;
 
+import com.example.truckstorm.data.models.Bid;
+import com.example.truckstorm.data.models.BidStatus;
 import com.example.truckstorm.data.models.Load;
 import com.example.truckstorm.data.models.LoadStatus;
+import com.example.truckstorm.data.repository.BidRepository;
 import com.example.truckstorm.data.repository.ClientRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
+import com.example.truckstorm.dtos.request.BidRequest;
 import com.example.truckstorm.dtos.request.LoadUploadRequest;
+import com.example.truckstorm.dtos.response.BidResponse;
 import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.dtos.response.LoadUpdateResponse;
@@ -14,6 +19,7 @@ import com.example.truckstorm.exceptions.LoadNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +31,12 @@ public class LoadServiceImpl implements LoadService {
 
     private final LoadRepository loadRepository;
     private final ClientRepository clientRepository;
+    private final BidRepository bidRepository;
 
-    public LoadServiceImpl(LoadRepository loadRepository, ClientRepository clientRepository) {
+    public LoadServiceImpl(LoadRepository loadRepository, ClientRepository clientRepository,BidRepository bidRepository) {
         this.loadRepository = loadRepository;
         this.clientRepository = clientRepository;
+        this.bidRepository = bidRepository;
     }
 
     @Override
@@ -49,9 +57,20 @@ public class LoadServiceImpl implements LoadService {
         loadRepository.save(load);
         loadPostResponse.setLoadUpdated(true);
         loadPostResponse.setPostResponseId(load.getClientId());
-        loadPostResponse.setLoadId(load.getId());
         loadPostResponse.setLoadStatus(LoadStatus.PENDING);
+        Load savedLoad = loadRepository.findByClientId(load.getClientId());
+        loadPostResponse.setLoadId(savedLoad.getId());
 
+        Bid bid = new Bid();
+        bid.setLoad(savedLoad);
+//        bid.setClient(ClientRepository.findByClientId(loadUploadRequest.getClientId()));
+        bid.setWeight(savedLoad.getWeight());
+        bid.setBidStatus(BidStatus.PENDING);
+        bid.setBidTimestamp(Instant.now());
+        bid.setPickupLocation(load.getPickupLocation());
+        bid.setDestination(load.getDeliveryLocation());
+        bid.setNote(load.getNote());
+        bidRepository.save(bid);
 
         if (load.getId() != 0){
             loadPostResponse.setLoadStatus(load.getLoadStatus());

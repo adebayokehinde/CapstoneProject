@@ -41,6 +41,9 @@ public class Bid {
     private String pickupLocation;
     private String destination;
     private Instant bidTimestamp;
+    private double weight;
+    private String clientNote;
+    private String driverNote;
 
     private Instant expiryTime;
     @Column(length = 1000)
