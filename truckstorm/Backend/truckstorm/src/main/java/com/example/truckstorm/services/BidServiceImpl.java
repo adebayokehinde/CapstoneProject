@@ -51,9 +51,7 @@ public BidResponse createBid(BidRequest bidRequest) {
     bid.setDestination(load.getDeliveryLocation());
     bid.setNote(load.getNote());
 
-
     Bid savedBid = bidRepository.save(bid);
-
 
     BidResponse bidResponse = new BidResponse();
         bidResponse.setId(savedBid.getId());

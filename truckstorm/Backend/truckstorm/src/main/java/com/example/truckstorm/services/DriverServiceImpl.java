@@ -13,6 +13,7 @@ import com.example.truckstorm.exceptions.DuplicateDriverException;
 import com.example.truckstorm.exceptions.InvalidDriverException;
 import com.example.truckstorm.exceptions.InvalidPasswordException;
 import com.example.truckstorm.exceptions.ResourceNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,13 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     public final TruckRepository truckRepository;
     public final BidRepository bidRepository;
+    public final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public DriverServiceImpl(DriverRepository driverRepository,  TruckRepository truckRepository, BidRepository bidRepository) {
+    public DriverServiceImpl(DriverRepository driverRepository,  TruckRepository truckRepository, BidRepository bidRepository,  BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.driverRepository = driverRepository;
         this.truckRepository = truckRepository;
         this.bidRepository = bidRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class DriverServiceImpl implements DriverService {
 
         Driver driver = new Driver();
         driver.setEmail(driverRequest.getEmail());
-        driver.setPassword(driverRequest.getPassword());
+        driver.setPassword(bCryptPasswordEncoder.encode(driverRequest.getPassword()));
         driver.setFirstName(driverRequest.getFirstName());
         driver.setDriverLicenseNumber(driverRequest.getDriverLicenseNumber());
         driver.setProfileImageUrl(driverRequest.getProfileImageUrl());
@@ -105,8 +108,7 @@ public class DriverServiceImpl implements DriverService {
         if (driverRepository.findByEmail(driverLoginRequest.getEmail()) == null) throw new InvalidDriverException("Driver DoseNot Exist");
     }
     private int validatePassword(DriverLoginRequest driverLoginRequest) {
-        if (driverRepository.findByEmail(driverLoginRequest.getEmail()).getPassword()
-                .equals(driverLoginRequest.getPassword())) return driverRepository.findByEmail(driverLoginRequest.getEmail()).getUserID();
+        if (bCryptPasswordEncoder.matches(driverLoginRequest.getPassword(), driverRepository.findByEmail(driverLoginRequest.getEmail()).getPassword())) return driverRepository.findByEmail(driverLoginRequest.getEmail()).getUserID();
         throw new InvalidPasswordException("Invalid Password");
     }
 
