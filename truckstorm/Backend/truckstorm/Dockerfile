@@ -1,12 +1,10 @@
 
-FROM eclipse-temurin:17-jdk AS build
-WORKDIR /workspace
+FROM maven:3.8.3-openjdk-17 AS build
 COPY . .
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
+RUN mvn clean install
 
 
-FROM eclipse-temurin:17-jre
-WORKDIR /app
-COPY --from=build /workspace/target/*.jar app.jar
+FROM eclipse-temurin:17-jDK
+COPY --from=build /target/truckstorm.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
