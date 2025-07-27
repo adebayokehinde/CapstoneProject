@@ -70,8 +70,6 @@ public class LoadServiceTest {
     public void tearDown() {
         bidRepository.deleteAll();
         loadRepository.deleteAll();
-
-
     }
 
     @Test

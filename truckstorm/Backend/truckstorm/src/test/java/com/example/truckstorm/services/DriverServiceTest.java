@@ -63,7 +63,10 @@ public class DriverServiceTest {
     }
     @AfterEach
     public void tearDown() {
+        bidRepository.deleteAll();
+        loadRepository.deleteAll();
         driverRepository.deleteAll();
+
     }
     @Test
     public void TestThatDriverCanRegisterWithTruck(){

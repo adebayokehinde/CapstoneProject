@@ -73,7 +73,7 @@ public class LoadController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLoad(@PathVariable int id) {
-        loadService.deleteLoad(id);
+//        loadService.deleteLoad(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -54,11 +54,10 @@ public class LoadServiceImpl implements LoadService {
         load.setCreatedAt(LocalDateTime.now());
         load.setUpdatedAt(LocalDateTime.now());
         load.setLoadStatus(LoadStatus.PENDING);
-        loadRepository.save(load);
+        Load savedLoad = loadRepository.save(load);
         loadPostResponse.setLoadUpdated(true);
         loadPostResponse.setPostResponseId(load.getClientId());
         loadPostResponse.setLoadStatus(LoadStatus.PENDING);
-        Load savedLoad = loadRepository.findByClientId(load.getClientId());
         loadPostResponse.setLoadId(savedLoad.getId());
 
         Bid bid = new Bid();

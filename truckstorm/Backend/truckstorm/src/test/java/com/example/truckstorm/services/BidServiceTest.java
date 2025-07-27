@@ -75,6 +75,7 @@ public class BidServiceTest {
     @AfterEach
     public  void tearDown() {
         bidRepository.deleteAll();
+        loadRepository.deleteAll();
     }
 
     @Test
