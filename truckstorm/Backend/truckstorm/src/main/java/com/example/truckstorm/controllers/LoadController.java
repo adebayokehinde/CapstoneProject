@@ -22,7 +22,7 @@ public class LoadController {
         this.loadService = loadService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createLoad(@RequestBody LoadUploadRequest loadUploadRequest) {
         LoadPostResponse response = loadService.postLoad(loadUploadRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class LoadController {
         return ResponseEntity.ok(loadPostResponse);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllLoads() {
         List<LoadResponse> loads = loadService.getAllLoads();
         return ResponseEntity.ok(loads);
