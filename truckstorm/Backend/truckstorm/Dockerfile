@@ -1,13 +1,12 @@
-# Build stage - uses Maven to create the JAR
-FROM maven:3.8.6-eclipse-temurin-17 AS builder
+# Build stage
+FROM eclipse-temurin:17-jdk as builder
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+COPY . .
+RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
-# Runtime stage - just needs Java to run the JAR
-FROM eclipse-temurin:17-jre-jammy
+# Run stage
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "0.0.1-SNAPSHOT-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar", "--server.port=${PORT}"]
