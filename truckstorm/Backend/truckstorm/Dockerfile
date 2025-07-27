@@ -1,11 +1,12 @@
 
-FROM eclipse-temurin:17-jdk as builder
-WORKDIR /app
+FROM eclipse-temurin:17-jdk AS build
+WORKDIR /workspace
 COPY . .
 RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
+
 FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=build /workspace/target/*.jar app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar", "--server.port=${PORT}"]
+ENTRYPOINT ["java","-jar","app.jar"]
