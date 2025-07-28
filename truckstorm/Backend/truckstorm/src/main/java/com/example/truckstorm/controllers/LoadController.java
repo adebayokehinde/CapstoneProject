@@ -8,6 +8,7 @@ import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.dtos.response.LoadUpdateResponse;
 import com.example.truckstorm.services.LoadService;
 import com.example.truckstorm.services.LoadServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class LoadController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createLoad(@RequestBody LoadUploadRequest loadUploadRequest) {
+    public ResponseEntity<?> createLoad(@Valid @RequestBody LoadUploadRequest loadUploadRequest) {
         try {
             LoadPostResponse response = loadService.postLoad(loadUploadRequest);
             return new ResponseEntity<>(response, HttpStatus.CREATED);

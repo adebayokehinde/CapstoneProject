@@ -37,16 +37,21 @@ public class DriversController {
     @PutMapping("/{id}/availability")
     public ResponseEntity<?> updateDriverAvailability(
             @PathVariable int id,
-            @RequestParam boolean available) {
-        DriverUpdateResponse updatedDriver = driverService.updateDriverAvailability(id, available);
-        return ResponseEntity.ok(updatedDriver);
+            @RequestParam boolean available){
+        try {
+            DriverUpdateResponse updatedDriver = driverService.updateDriverAvailability(id, available);
+            return ResponseEntity.ok(updatedDriver);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage() , HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/available")
     public ResponseEntity<List<Driver>> getAvailableDriversInRegion(
             @RequestParam String region) {
-        List<Driver> drivers = driverService.findAvailableDriversInRegion(region);
-        return ResponseEntity.ok(drivers);
+            List<Driver> drivers = driverService.findAvailableDriversInRegion(region);
+            return ResponseEntity.ok(drivers);
+
     }
 
     @GetMapping("/{id}")
