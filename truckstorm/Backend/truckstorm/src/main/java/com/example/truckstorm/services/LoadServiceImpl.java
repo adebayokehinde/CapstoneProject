@@ -56,9 +56,13 @@ public class LoadServiceImpl implements LoadService {
         load.setLoadStatus(LoadStatus.PENDING);
         Load savedLoad = loadRepository.save(load);
         loadPostResponse.setLoadUpdated(true);
-        loadPostResponse.setPostResponseId(load.getClientId());
+        loadPostResponse.setPostResponseId(savedLoad.getClientId());
         loadPostResponse.setLoadStatus(LoadStatus.PENDING);
         loadPostResponse.setLoadId(savedLoad.getId());
+        loadPostResponse.setPickupLocation(savedLoad.getPickupLocation());
+        loadPostResponse.setDeliveryLocation(savedLoad.getDeliveryLocation());
+        loadPostResponse.setWeight(savedLoad.getWeight());
+        loadPostResponse.setCreatedAt(savedLoad.getCreatedAt());
 
         Bid bid = new Bid();
         bid.setLoad(savedLoad);
@@ -103,7 +107,6 @@ public class LoadServiceImpl implements LoadService {
         loadPostResponse.setPickupLocation(load.getPickupLocation());
         loadPostResponse.setDeliveryLocation(load.getDeliveryLocation());
         loadPostResponse.setWeight(load.getWeight());
-
         return loadPostResponse;
 
     }
@@ -156,7 +159,6 @@ public class LoadServiceImpl implements LoadService {
         loadResponse.setId(updatedLoad.getId());
         loadResponse.setUpdatedAt(updatedLoad.getUpdatedAt());
         loadResponse.setLoadStatus(updatedLoad.getLoadStatus());
-
         return loadResponse;
     }
 

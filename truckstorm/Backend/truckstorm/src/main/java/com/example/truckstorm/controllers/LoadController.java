@@ -7,6 +7,7 @@ import com.example.truckstorm.dtos.response.LoadPostResponse;
 import com.example.truckstorm.dtos.response.LoadResponse;
 import com.example.truckstorm.dtos.response.LoadUpdateResponse;
 import com.example.truckstorm.services.LoadService;
+import com.example.truckstorm.services.LoadServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,31 +17,43 @@ import java.util.List;
 @RequestMapping("/api/load")
 public class LoadController {
 
-    private final LoadService loadService;
+    private final LoadServiceImpl loadService;
 
-    public LoadController(LoadService loadService) {
+    public LoadController(LoadServiceImpl loadService) {
         this.loadService = loadService;
     }
 
     @PostMapping("/create")
     public ResponseEntity<?> createLoad(@RequestBody LoadUploadRequest loadUploadRequest) {
-        LoadPostResponse response = loadService.postLoad(loadUploadRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        try {
+            LoadPostResponse response = loadService.postLoad(loadUploadRequest);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getLoadById(@PathVariable int id) {
-        LoadPostResponse loadPostResponse = loadService.getLoadById(id);
-        return ResponseEntity.ok(loadPostResponse);
+        try {
+            LoadPostResponse loadPostResponse = loadService.getLoadById(id);
+            return ResponseEntity.ok(loadPostResponse);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllLoads() {
-        List<LoadResponse> loads = loadService.getAllLoads();
-        return ResponseEntity.ok(loads);
-    }
+        try {
+            List<LoadResponse> loads = loadService.getAllLoads();
+            return ResponseEntity.ok(loads);
 
+        }catch (Exception e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 

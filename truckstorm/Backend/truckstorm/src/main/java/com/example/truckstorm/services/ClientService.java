@@ -1,5 +1,11 @@
 package com.example.truckstorm.services;
 
-public interface ClientService {
+import com.example.truckstorm.dtos.request.ClientLoginRequest;
+import com.example.truckstorm.dtos.request.ClientRegistrationRequest;
+import com.example.truckstorm.dtos.response.ClientLoginResponse;
+import com.example.truckstorm.dtos.response.ClientResponse;
 
+public interface ClientService {
+    ClientResponse registerClient(ClientRegistrationRequest registration);
+    ClientLoginResponse login(ClientLoginRequest clientLogin);
 }

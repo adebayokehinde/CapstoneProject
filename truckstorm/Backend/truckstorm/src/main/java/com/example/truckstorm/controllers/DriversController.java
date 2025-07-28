@@ -23,10 +23,14 @@ public class DriversController {
     }
 
 
-    @PostMapping
+    @PostMapping("/registerDriver")
     public ResponseEntity<?> registerDriver(@RequestBody DriverRegistrationRequest driver) {
-        DriverResponse registeredDriver = driverService.registerDriver(driver);
-        return new ResponseEntity<>(registeredDriver, HttpStatus.CREATED);
+        try {
+            DriverResponse registeredDriver = driverService.registerDriver(driver);
+            return new ResponseEntity<>(registeredDriver, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage() , HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}/availability")

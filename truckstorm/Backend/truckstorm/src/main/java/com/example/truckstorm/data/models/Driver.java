@@ -34,8 +34,8 @@ public class Driver extends User {
 
     private LocalDateTime updatedAt;
 
-    @NotBlank(message = "Driver license number is required")
-    @Column(name = "driver_license_number", nullable = false, unique = true)
+
+    @Column(name = "driver_license_number", unique = true)
     private String driverLicenseNumber;
 
     @Column(columnDefinition = "DECIMAL(3,2) DEFAULT 5.0")

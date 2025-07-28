@@ -37,7 +37,6 @@ public abstract class User {
     private String password;
     private String address;
 
-    @NotBlank(message = "Current location is required")
     private String currentLocation;
 
     @ElementCollection(fetch = FetchType.EAGER)
