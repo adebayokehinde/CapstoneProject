@@ -6,6 +6,7 @@ import com.example.truckstorm.dtos.request.DriverRequest;
 import com.example.truckstorm.dtos.response.DriverResponse;
 import com.example.truckstorm.dtos.response.DriverUpdateResponse;
 import com.example.truckstorm.services.DriverService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class DriversController {
 
 
     @PostMapping("/registerDriver")
-    public ResponseEntity<?> registerDriver(@RequestBody DriverRegistrationRequest driver) {
+    public ResponseEntity<?> registerDriver(@Valid @RequestBody DriverRegistrationRequest driver) {
         try {
             DriverResponse registeredDriver = driverService.registerDriver(driver);
             return new ResponseEntity<>(registeredDriver, HttpStatus.CREATED);

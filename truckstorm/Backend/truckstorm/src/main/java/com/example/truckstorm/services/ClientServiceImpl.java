@@ -62,11 +62,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     private void verifyPassword(ClientLoginRequest clientLoginRequest) {
-        if (!bCryptPasswordEncoder
-                .matches(clientRepository.findByEmail(clientLoginRequest
-                .getEmail())
-                .getPassword(), clientLoginRequest
-                .getPassword())) throw new InvalidClientException("Invalid Password");
+        if (!bCryptPasswordEncoder.matches(clientLoginRequest
+                .getPassword(), clientRepository.findByEmail(clientLoginRequest
+                .getEmail()).getPassword())) throw new InvalidClientException("Invalid Password");
     }
 
     private void validateClient(ClientLoginRequest clientLoginRequest) {

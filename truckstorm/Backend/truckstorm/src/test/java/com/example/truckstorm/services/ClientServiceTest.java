@@ -81,12 +81,19 @@ public class ClientServiceTest {
 
     }
     @Test
-    public void clientCannotLoginWithInvalidEmailTest(){
+    public void clientCannotLoginWithInvalidDetailsTest() {
         ClientResponse savedClient = clientService.registerClient(registration);
         assertThat(clientRepository.count()).isEqualTo(1);
+        assertThat(savedClient.getId()).isNotEqualTo(0);
+        ClientLoginRequest clientLogin = new ClientLoginRequest();
+        clientLogin.setEmail(registration.getEmail());
+        clientLogin.setPassword("WrongPassword");
+        assertThrows(Exception.class, () -> clientService.login(clientLogin));
+
+        clientLogin.setEmail("wrongEmail");
+        clientLogin.setPassword(registration.getPassword());
+        assertThrows(Exception.class, () -> clientService.login(clientLogin));
 
     }
-
-
 
 }
