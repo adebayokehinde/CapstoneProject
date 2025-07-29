@@ -145,6 +145,7 @@ public class LoadServiceTest {
         assertThat(savedLoad.getLoadUpdated()).isNotNull();
         assertThat(bidRepository.count()).isEqualTo(1);
 
+
     }
 
 

@@ -39,6 +39,16 @@ public class ClientController {
         }
 
     }
+    @PostMapping
+    public ResponseEntity<?> loginClient(@Valid @RequestBody ClientLoginRequest clientLoginRequest) {
+        try{
+            ClientLoginResponse clientLoginResponse = clientService.login(clientLoginRequest);
+            return new ResponseEntity<>(new APIResponse(true , clientLoginResponse, "200"), HttpStatus.OK);
+        }catch (Exception e){
+            return new  ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
 

@@ -1,12 +1,12 @@
 package com.example.truckstorm.dtos.request;
 
 import com.example.truckstorm.data.models.TruckType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class DriverUpdate {
     private TruckType truckType;

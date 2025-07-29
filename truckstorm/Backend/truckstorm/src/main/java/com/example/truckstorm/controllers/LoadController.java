@@ -50,14 +50,10 @@ public class LoadController {
         try {
             List<LoadResponse> loads = loadService.getAllLoads();
             return ResponseEntity.ok(loads);
-
         }catch (Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 
 
 

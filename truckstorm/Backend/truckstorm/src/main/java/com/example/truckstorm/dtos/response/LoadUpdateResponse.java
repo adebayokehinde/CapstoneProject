@@ -1,14 +1,13 @@
 package com.example.truckstorm.dtos.response;
 
 import com.example.truckstorm.data.models.LoadStatus;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class LoadUpdateResponse {
     private int id;

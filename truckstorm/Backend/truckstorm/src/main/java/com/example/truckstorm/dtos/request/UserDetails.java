@@ -1,15 +1,16 @@
 package com.example.truckstorm.dtos.request;
 
+import com.example.truckstorm.data.models.UserType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DriverLoginRequest {
+public class UserDetails {
+    private String id;
     private String email;
-    private String password;
+    private String Firstname;
+    private UserType userType;
 }

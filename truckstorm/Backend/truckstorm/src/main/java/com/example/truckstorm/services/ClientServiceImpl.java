@@ -5,8 +5,10 @@ import com.example.truckstorm.data.models.Client;
 import com.example.truckstorm.data.repository.ClientRepository;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.dtos.request.ClientLoginRequest;
+import com.example.truckstorm.dtos.request.ClientPostRequest;
 import com.example.truckstorm.dtos.request.ClientRegistrationRequest;
 import com.example.truckstorm.dtos.response.ClientLoginResponse;
+import com.example.truckstorm.dtos.response.ClientPostResponse;
 import com.example.truckstorm.dtos.response.ClientResponse;
 import com.example.truckstorm.exceptions.DuplicateClientException;
 import com.example.truckstorm.exceptions.InvalidClientException;
@@ -71,6 +73,9 @@ public class ClientServiceImpl implements ClientService {
         if (clientRepository
                 .findByEmail(clientLoginRequest
                 .getEmail()) == null) throw new InvalidClientException("Client Does Not Exist");
+    }
+    public ClientPostResponse postLoad(ClientPostRequest clientPostRequest) {
+
     }
 
 }

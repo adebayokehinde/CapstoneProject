@@ -1,12 +1,14 @@
 package com.example.truckstorm.dtos.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AssignDriverResponseDTO {
     private Long assignmentId;
 //    private DriverDTO driver;

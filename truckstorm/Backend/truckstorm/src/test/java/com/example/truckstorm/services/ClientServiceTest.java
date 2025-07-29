@@ -1,12 +1,16 @@
 package com.example.truckstorm.services;
 
+import com.example.truckstorm.data.models.LoadType;
 import com.example.truckstorm.data.repository.BidRepository;
 import com.example.truckstorm.data.repository.ClientRepository;
 import com.example.truckstorm.data.repository.DriverRepository;
 import com.example.truckstorm.data.repository.LoadRepository;
 import com.example.truckstorm.dtos.request.ClientLoginRequest;
+import com.example.truckstorm.dtos.request.ClientPostRequest;
 import com.example.truckstorm.dtos.request.ClientRegistrationRequest;
+import com.example.truckstorm.dtos.request.LoadUploadRequest;
 import com.example.truckstorm.dtos.response.ClientLoginResponse;
+import com.example.truckstorm.dtos.response.ClientPostResponse;
 import com.example.truckstorm.dtos.response.ClientResponse;
 import com.example.truckstorm.exceptions.DuplicateClientException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -95,5 +101,21 @@ public class ClientServiceTest {
         assertThrows(Exception.class, () -> clientService.login(clientLogin));
 
     }
+    @Test
+    public ClientPostResponse clientCanPostALoadTest() {
 
+       ClientPostRequest PostRequest = new ClientPostRequest();
+
+        PostRequest.setPickupLocation("semicolon sabo yaba lagos");
+        PostRequest.setDeliveryLocation("ozone sabo yaba lagos");
+        PostRequest.setWeight(234.0);
+        PostRequest.setLoadType(LoadType.GENERAL);
+        PostRequest.setClientId(1);
+        PostRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
+
+        ClientPostResponse clientPostResponse = clientService.postLoad( );
+
+        return clientPostResponse;
+
+    }
 }

@@ -221,8 +221,6 @@ public class DriverServiceTest {
     @Test
     public void driverCanBid(){
 
-    
-
 
     }
 
