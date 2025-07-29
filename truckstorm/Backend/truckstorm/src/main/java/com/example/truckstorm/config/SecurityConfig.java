@@ -27,11 +27,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests
-                        .requestMatchers("api/clients/**").permitAll()
-                        .requestMatchers("api/load/**")
-                        .hasAnyRole("USER", "ADMIN")
-                        .anyRequest()
-                        .authenticated()
+                        .requestMatchers("/api/clients/**", "/api/load/all", "/api/load/status/**").permitAll()
+                        .requestMatchers("/api/load/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/drivers/registerDriver").permitAll()
+                        .requestMatchers("/api/drivers/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated()
         )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -37,13 +37,13 @@ public class JwtServiceUtil {
         return createToken(userDetails.getId(), claims);
     }
 
-    public String createToken( String Subject, Map<String, Object> claims) {
+    public String createToken( String subject, Map<String, Object> claims) {
         return Jwts.builder()
-                .setSubject(Subject)
-                .issuer(ISSUER)
-                .issuedAt(new Date())
-                .setIssuedAt(new Date(System.currentTimeMillis()+EXPIRATION_TIME))
-                .claims(claims)
+                .setSubject(subject)
+                .setClaims(claims)
+                .setIssuer(ISSUER)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY)
                 .compact();
     }
@@ -76,7 +76,7 @@ public class JwtServiceUtil {
     }
 
     public String extractFirstName(String token) {
-        return extractClaim(token, claims -> claims.get("firstName", String.class));
+        return extractClaim(token, claims -> claims.get("firstname", String.class));
     }
 
     public String extractEmail(String token) {

@@ -103,7 +103,7 @@ public class ClientServiceTest {
     }
 //    @Test
 //    public ClientPostResponse clientCanPostALoadTest() {
-
+//
 //       ClientPostRequest PostRequest = new ClientPostRequest();
 //
 //        PostRequest.setPickupLocation("semicolon sabo yaba lagos");
@@ -114,8 +114,8 @@ public class ClientServiceTest {
 //        PostRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
 //
 //        ClientPostResponse clientPostResponse = clientService.postLoad( );
-
+//
 //        return clientPostResponse;
-
+//
 //    }
 }
