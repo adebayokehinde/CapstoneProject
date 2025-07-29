@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,23 +33,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwtToken ;
-        final String userEmail;
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request, response);
             return;
         }
-        jwtToken = authHeader.substring(7);
+
+        final String jwtToken = authHeader.substring(7);
+
         if(jwtServiceUtil.isTokenValid(jwtToken)){
             setAuthenticationContent(jwtToken);
         }
-
+        filterChain.doFilter(request, response);
     }
     public void setAuthenticationContent(String token){
         String userId = jwtServiceUtil.extractUserId(token);
-        String userType = jwtServiceUtil.extractUserType(token).name();
+        String userType = jwtServiceUtil.extractUserType(token);
 
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("USER_TYPE" + userType));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userType));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userId,

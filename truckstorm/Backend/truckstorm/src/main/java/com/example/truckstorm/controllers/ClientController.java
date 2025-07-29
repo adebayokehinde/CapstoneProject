@@ -29,8 +29,8 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> registerClient(@Valid @RequestBody ClientRegistrationRequest clientRegistrationRequestRequest) {
+    @PostMapping("/api/clients/register")
+    public ResponseEntity<?> register(@Valid @RequestBody ClientRegistrationRequest clientRegistrationRequestRequest) {
         try{
             ClientResponse clientResponse = clientService.registerClient(clientRegistrationRequestRequest);
             return new ResponseEntity<>(new APIResponse(true , clientResponse, "201"), HttpStatus.CREATED);
@@ -39,8 +39,8 @@ public class ClientController {
         }
 
     }
-    @PostMapping
-    public ResponseEntity<?> loginClient(@Valid @RequestBody ClientLoginRequest clientLoginRequest) {
+    @PostMapping("/api/clients/login")
+    public ResponseEntity<?> login(@Valid @RequestBody ClientLoginRequest clientLoginRequest) {
         try{
             ClientLoginResponse clientLoginResponse = clientService.login(clientLoginRequest);
             return new ResponseEntity<>(new APIResponse(true , clientLoginResponse, "200"), HttpStatus.OK);
@@ -52,7 +52,7 @@ public class ClientController {
 
 
 
-//
+
 //    @GetMapping("/{clientId}/loads")
 //    public ResponseEntity<?> getClientsLoads(@PathVariable int clientId) {
 //        try {

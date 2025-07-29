@@ -90,6 +90,10 @@ public class BidServiceTest {
         assertEquals("PENDING", bidResponse.getBidStatus());
 
     }
+    @Test
+    void BidIsCreatedOnBidRequestCreation() {
+
+    }
 
 
 
