@@ -101,8 +101,8 @@ public class ClientServiceTest {
         assertThrows(Exception.class, () -> clientService.login(clientLogin));
 
     }
-    @Test
-    public ClientPostResponse clientCanPostALoadTest() {
+//    @Test
+//    public ClientPostResponse clientCanPostALoadTest() {
 
 //       ClientPostRequest PostRequest = new ClientPostRequest();
 //
