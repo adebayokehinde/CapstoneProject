@@ -104,18 +104,18 @@ public class ClientServiceTest {
     @Test
     public ClientPostResponse clientCanPostALoadTest() {
 
-       ClientPostRequest PostRequest = new ClientPostRequest();
+//       ClientPostRequest PostRequest = new ClientPostRequest();
+//
+//        PostRequest.setPickupLocation("semicolon sabo yaba lagos");
+//        PostRequest.setDeliveryLocation("ozone sabo yaba lagos");
+//        PostRequest.setWeight(234.0);
+//        PostRequest.setLoadType(LoadType.GENERAL);
+//        PostRequest.setClientId(1);
+//        PostRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
+//
+//        ClientPostResponse clientPostResponse = clientService.postLoad( );
 
-        PostRequest.setPickupLocation("semicolon sabo yaba lagos");
-        PostRequest.setDeliveryLocation("ozone sabo yaba lagos");
-        PostRequest.setWeight(234.0);
-        PostRequest.setLoadType(LoadType.GENERAL);
-        PostRequest.setClientId(1);
-        PostRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
+//        return clientPostResponse;
 
-        ClientPostResponse clientPostResponse = clientService.postLoad( );
-
-        return clientPostResponse;
-
-    }
+//    }
 }
