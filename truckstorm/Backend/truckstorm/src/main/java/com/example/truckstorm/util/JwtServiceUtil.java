@@ -77,8 +77,13 @@ public class JwtServiceUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean isTokenValid(String token) {
-       final String username = extractUsername(token); return username.equals(userDetails.getUsername()) &!Tokem
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+       final String username = extractUsername(token);
+       return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    private String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
 
@@ -111,7 +116,7 @@ public class JwtServiceUtil {
     }
 
     public String extractEmail(String token) {
-        return extractClaim(token, claims -> claims.get("email", String.class));
+        return extractClaim(token, Claims::getSubject);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

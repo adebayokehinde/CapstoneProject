@@ -103,17 +103,16 @@ public class ClientServiceTest {
     }
 //    @Test
 //    public ClientPostResponse clientCanPostALoadTest() {
+//       ClientPostRequest postRequest = new ClientPostRequest();
+//        postRequest.setPickupLocation("semicolon sabo yaba lagos");
+//        postRequest.setDeliveryLocation("ozone sabo yaba lagos");
+//        postRequest.setWeight(234.0);
+//        postRequest.setLoadType(LoadType.GENERAL);
+//        postRequest.setClientId(1);
+//        postRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
 //
-//       ClientPostRequest PostRequest = new ClientPostRequest();
-//
-//        PostRequest.setPickupLocation("semicolon sabo yaba lagos");
-//        PostRequest.setDeliveryLocation("ozone sabo yaba lagos");
-//        PostRequest.setWeight(234.0);
-//        PostRequest.setLoadType(LoadType.GENERAL);
-//        PostRequest.setClientId(1);
-//        PostRequest.setImageUrls( List.of(" imageUrl1","imageUrl2"));
-//
-//        ClientPostResponse clientPostResponse = clientService.postLoad( );
+//        ClientPostResponse clientPostResponse = clientService.postLoad(postRequest);
+//        assertThat(clientRepository.count()).isEqualTo(1);
 //
 //        return clientPostResponse;
 //

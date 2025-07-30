@@ -75,6 +75,8 @@ public class ClientServiceImpl implements ClientService {
                 .getEmail()) == null) throw new InvalidClientException("Client Does Not Exist");
     }
     public ClientPostResponse postLoad(ClientPostRequest clientPostRequest) {
+
+
         return null;
     }
 
