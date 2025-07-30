@@ -44,42 +44,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 @NonNull FilterChain filterChain)
 
             throws ServletException, IOException {
-//        final String authHeader = request.getHeader("Authorization");
-//
-//        if (authHeader != null && !authHeader.startsWith("Bearer ")){
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//
-//        assert authHeader != null;
-//        final String jwtToken = authHeader.substring(7).trim();
-//        email = jwtServiceUtil.extractEmail(jwtToken);
-//
-//        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//            var userDetails = userDetailsService.loadUserByUsername(email);
-//        }
-//
-//        if(jwtServiceUtil.isTokenValid(jwtToken, userDetails)){
-//            var authToken = new UsernamePasswordAuthenticationToken(userDetails,
-//                    null, userDetails.getAuthorities()
-//            );
-//            authToken.setDetails(new WebAuthenticationDetails(request));
-//            SecurityContextHolder.getContext().setAuthentication(authToken);
-//        }
-//        filterChain.doFilter(request, response);
-//    }
-////    public void setAuthenticationContent(String token){
-////        String userId = jwtServiceUtil.extractUserId(token);
-////        String userType = jwtServiceUtil.extractUserType(token);
-////
-////        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userType));
-////
-////        Authentication authentication = new UsernamePasswordAuthenticationToken(
-////                userId,
-////                null,
-////                authorities
-////        );
-////
-////        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        assert authHeader != null;
+        final String jwtToken = authHeader.substring(7).trim();
+        email = jwtServiceUtil.extractEmail(jwtToken);
+
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var userDetails = userDetailsService.loadUserByUsername(email);
+        }
+
+        if(jwtServiceUtil.isTokenValid(jwtToken, userDetails)){
+            var authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                    null, userDetails.getAuthorities()
+            );
+            authToken.setDetails(new WebAuthenticationDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+        filterChain.doFilter(request, response);
+    }
+    public void setAuthenticationContent(String token){
+        String userId = jwtServiceUtil.extractUserId(token);
+        String userType = jwtServiceUtil.extractUserType(token);
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userType));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userId,
+                null,
+                authorities
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
