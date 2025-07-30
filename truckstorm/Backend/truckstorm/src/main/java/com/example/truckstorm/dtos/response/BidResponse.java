@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BidResponse {
     private Integer id;
+    private String token;
     private BigDecimal price;
     private String bidStatus;
     private Integer loadId;
