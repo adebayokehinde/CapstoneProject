@@ -1,6 +1,8 @@
 package com.example.truckstorm.util;
 
+import com.example.truckstorm.data.models.CustomUserDetails;
 import com.example.truckstorm.data.models.UserType;
+import io.jsonwebtoken.JwtException;
 import org.springframework.security.core.userdetails.UserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,10 +27,11 @@ import java.util.function.Function;
 
 @Component
 public class JwtServiceUtil {
+
     @Value("${jwt.secret}")
-    public String SECRET_KEY;
+    private String SECRET_KEY;
     @Value("${jwt.expiration}")
-    private String EXPIRATION_TIME;
+    private long EXPIRATION_TIME;
 
 
     public boolean hasClaim(Claims claimName, String key) {
@@ -37,12 +40,7 @@ public class JwtServiceUtil {
     }
 
     private Claims extractAllClaims(String key) {
-        return Jwts
-                .parser()
-                .verifyWith(getSignedKey())
-                .build()
-                .parseSignedClaims(key)
-                .getPayload();
+        return parseToken(key);
     }
 
     private SecretKey getSignedKey() {
@@ -51,12 +49,9 @@ public class JwtServiceUtil {
     }
 
 
-    private SecretKey convertStringToSecretKey(String base64Key) {
-        byte[] decodedKey = Base64.getDecoder().decode(base64Key);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
-    }
     public String generateToken( UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userDetails instanceof CustomUserDetails ? ((CustomUserDetails) userDetails).getUsername() : userDetails.getUsername());
         return createToken(claims, userDetails);
     }
 
@@ -67,19 +62,20 @@ public class JwtServiceUtil {
                 .subject(userDetails.getUsername())
                 .claim("authorities", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
-                .signWith(jwtSigningKey())
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSignedKey())
                 .compact();
     }
 
-    private Key jwtSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-       final String username = extractUsername(token);
-       return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        try {
+            String sanitizedToken = sanitizeToken(token);
+            final String username = extractUsername(sanitizedToken);
+            return username.equals(userDetails.getUsername()) && !isTokenExpired(sanitizedToken);
+        } catch (IllegalArgumentException | JwtException e) {
+            return false; // Return false for invalid tokens
+        }
     }
 
     private String extractUsername(String token) {
@@ -88,15 +84,24 @@ public class JwtServiceUtil {
 
 
     public Claims parseToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        String sanitizedToken = sanitizeToken(token);
+        try {
+            return Jwts.parser()
+                    .verifyWith(getSignedKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (JwtException e) {
+            throw new IllegalArgumentException("Invalid JWT token: " + e.getMessage());
+        }
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (IllegalArgumentException | JwtException e) {
+            return true;
+        }
     }
 
     public Date extractExpiration(String token) {
@@ -104,7 +109,8 @@ public class JwtServiceUtil {
     }
 
     public String extractUserType(String token) {
-        return extractClaim(token, claims -> claims.get("userType", String.class));
+        String userType = extractClaim(token, claims -> claims.get("userType", String.class));
+        return userType != null ? userType : "";
     }
 
     public String extractUserId(String token) {
@@ -116,12 +122,31 @@ public class JwtServiceUtil {
     }
 
     public String extractEmail(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractClaim(token, claims -> claims.get("email",  String.class));
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseToken(token);
-        return claimsResolver.apply(claims);
+        try {
+            final Claims claims = parseToken(token);
+            return claimsResolver.apply(claims);
+        } catch (IllegalArgumentException | JwtException e) {
+            return null;
+        }
+    }
+
+    private String sanitizeToken(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("JWT token cannot be null or empty");
+        }
+        String sanitized = token.trim();
+        if (sanitized.contains(" ")) {
+            throw new IllegalArgumentException("JWT token contains invalid whitespace characters");
+        }
+        // Basic format check: should contain two dots (header.payload.signature)
+        if (sanitized.chars().filter(ch -> ch == '.').count() != 2) {
+            throw new IllegalArgumentException("JWT token does not match expected format (header.payload.signature)");
+        }
+        return sanitized;
     }
 
 }

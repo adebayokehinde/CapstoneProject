@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public class LoadUpdateResponse {
     private int id;
+    private String token;
     private LoadStatus loadStatus;
     private LocalDateTime UpdatedAt;
 
