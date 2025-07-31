@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: 1234
+      MARIADB_DATABASE: truckstorm
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  app:
+    image: truckstorm
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/truckstorm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mariadb
+
+volumes:
+  mariadb_data:
