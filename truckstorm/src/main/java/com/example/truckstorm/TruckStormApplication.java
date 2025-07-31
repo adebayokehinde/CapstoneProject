@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories("com.example.truckstorm.data.repository")
-@EntityScan("com.example.truckstorm.data.model")
+@EntityScan("com.example.truckstorm.data.models")
 public class TruckStormApplication {
 
     public static void main(String[] args) {
