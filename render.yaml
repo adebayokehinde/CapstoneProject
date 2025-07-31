@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: truckstorm
+    env: docker
+    dockerContext: truckstorm
+    buildCommand: docker build -t truckstorm .
+    startCommand: java -jar /app/app.jar
