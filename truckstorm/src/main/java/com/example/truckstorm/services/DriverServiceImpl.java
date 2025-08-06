@@ -54,7 +54,6 @@ public class DriverServiceImpl implements DriverService {
         driverRepository.save(driver);
         System.out.println("Driver registered successfully  "+ driverRepository.findByEmail(driverRequest.getEmail()).getUserID());
 
-
         if (driverRequest.isOwnsTruck()) {
             Truck truck = new Truck();
             truck.setTruckLicensedPlateNumber(driverRequest.getTruckDetails().getTruckLicensePlateNumber());

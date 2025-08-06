@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientLoginResponse {
-    public int id;
-    public String message;
+    private int id;
+    private String token ;
+    private String message;
 
 }

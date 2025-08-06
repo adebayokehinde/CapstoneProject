@@ -12,6 +12,7 @@ import com.example.truckstorm.dtos.response.ClientPostResponse;
 import com.example.truckstorm.dtos.response.ClientResponse;
 import com.example.truckstorm.exceptions.DuplicateClientException;
 import com.example.truckstorm.exceptions.InvalidClientException;
+import com.example.truckstorm.util.JwtServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,12 @@ public class ClientServiceImpl implements ClientService {
   private final ClientRepository clientRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtServiceUtil jwtServiceUtil;
 
-    public ClientServiceImpl( ClientRepository clientRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public ClientServiceImpl(ClientRepository clientRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtServiceUtil jwtServiceUtil) {
         this.clientRepository = clientRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtServiceUtil = jwtServiceUtil;
     }
 
 @Override
@@ -60,6 +63,7 @@ public class ClientServiceImpl implements ClientService {
                 .getEmail())
                 .getUserID());
         clientLoginResponse.setMessage("logged in Successfully.");
+        jwtServiceUtil.createToken( );
         return clientLoginResponse;
     }
 
@@ -75,7 +79,6 @@ public class ClientServiceImpl implements ClientService {
                 .getEmail()) == null) throw new InvalidClientException("Client Does Not Exist");
     }
     public ClientPostResponse postLoad(ClientPostRequest clientPostRequest) {
-
 
         return null;
     }

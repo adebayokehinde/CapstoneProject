@@ -72,7 +72,6 @@ public BidResponse createBid(BidRequest bidRequest) {
     @Override
     public List<Driver> findCompatibleDriversForLoad(Load load) {
 //        List<Driver> nearbyDrivers = driverRepository.findByCurrentLocationAndAvailable(load.getPickupLocation(), true);
-//
 //        return nearbyDrivers.stream()
 //                .filter(driver -> driver.getMaxLoadCapacity() >= load.getWeight())
 //                .filter(driver -> isTruckTypeCompatible( driver.getTruckType() , load.getLoadType()))
