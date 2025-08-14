@@ -63,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
                 .getEmail())
                 .getUserID());
         clientLoginResponse.setMessage("logged in Successfully.");
-        jwtServiceUtil.createToken( );
+//        jwtServiceUtil.createToken( );
         return clientLoginResponse;
     }
 

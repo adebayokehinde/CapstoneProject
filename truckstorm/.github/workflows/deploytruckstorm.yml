@@ -1,0 +1,53 @@
+name: truckStorm
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:latest
+        env:
+          MARIADB_ROOT_PASSWORD: password
+          MARIADB_DATABASE: testdb
+        ports:
+          - 3306:3306
+        # Wait for MariaDB to be ready before running tests
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root --password=password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Set up JDK 17
+            uses: actions/setup-java@v4
+            with:
+              distribution: 'temurin'
+              java-version: '17'
+
+          - name: Wait for MariaDB to be available
+            run: |
+              for i in {1..30}; do
+                if mysqladmin ping -h "127.0.0.1" -u"root" --password="password"; then
+                  echo "MariaDB is up!"
+                  break
+                fi
+                sleep 2
+              done
+
+          - name: Build and Test
+            run: |
+              ./mvnw clean verify
+
+
